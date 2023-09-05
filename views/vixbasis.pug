@@ -1,0 +1,59 @@
+extends layout
+
+include mixins/rvolchart
+include mixins/ivts
+include mixins/vvol
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        script(src="https://code.highcharts.com/highcharts.js")
+        div
+            table
+                tr
+                    th VIX3M
+                    th VIX/VIX3M
+                    th VVOL
+                tr
+                    td #{data.vix3m}
+                    td 
+                        +ivts(data.ivts, data.vix3m)
+                    td
+                        +vvol(data.vvol)
+        div 
+            br
+        div 
+            p Short Vol Cutoffs
+        div 
+            table
+                tr
+                    th VIX3M
+                    th VIX/VIX3M 
+                tr 
+                    td 15
+                    td 0.85
+                tr
+                    td 17
+                    td 0.9
+                tr
+                    td 20
+                    td 0.95
+                tr
+                    td < 25
+                    td 1.0
+                tr
+                    td > 25
+                    td 1.1
+        div
+            br
+        div
+            p Long Vol Cutoff If VVOL < 20 and VIX/VIX3M > short cut off. Else VIX/VIX3M > 1.1
+
+        div
+            div#ivts
+            +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts')
+        div
+            div#vvol
+            +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol')

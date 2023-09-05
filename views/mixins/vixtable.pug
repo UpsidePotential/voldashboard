@@ -1,0 +1,30 @@
+include zscore
+include ivts
+include vvol
+
+mixin vixtable(latest)
+    table
+        tr 
+            th VIX 
+            th VX30 
+            th VIX3M 
+            th VX30/VIX3M 
+            th Z-Score
+            th VIX/VIX3M
+            th VVOL
+
+        tr 
+            td 
+                .vxtd #{latest.VIX.toPrecision(4)}
+            td 
+                .vxtd #{latest.vx30.toPrecision(4)}
+            td 
+                .vxtd #{latest.VIX3M.toPrecision(4)}
+            td 
+                .vxtd #{latest.premium.toPrecision(4)}
+            td 
+                +zscore(latest.premium_zscore)
+            td
+                +ivts(latest.ivts, latest.VIX3M)
+            td
+                +vvol(latest.vvol)

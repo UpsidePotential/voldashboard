@@ -1,0 +1,16 @@
+mixin spxcurveChart(selector, prices)
+    script.
+        Highcharts.chart(document.querySelector('#{selector}'), {
+            title: {
+                text: 'SPX VIX Values'
+            },
+            xAxis: {
+                type: 'category',
+            },
+            legend:{ enabled:false },
+            series: [{
+                data: #{prices},
+                step: 'right',
+                type: 'spline'
+            }]
+        });

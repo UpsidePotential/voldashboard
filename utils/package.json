@@ -1,0 +1,28 @@
+{
+  "name": "local-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "test": "jasmine-ts --config=jasmine-ts.json",
+    "postinstall": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fast-csv": "^4.3.6",
+    "mongoose": "^7.2.2"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^4.0.3",
+    "cross-env": "^7.0.3",
+    "jasmine": "^3.6.1",
+    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine-ts": "^0.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^4.0.2"
+  }
+}

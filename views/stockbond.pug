@@ -1,0 +1,21 @@
+extends layout
+include mixins/premiumChart
+include mixins/vixtable
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            p Current Position: #{data.position}
+        div
+            p Current Trading Day #{data.currentTradingDay}
+        div
+            p Trading Days in Month #{data.tradingDaysInMonth}
+        div
+            p Current Month Returns SPY: #{(data.currentMonth.SPY*100).toPrecision(2)}% TLT: #{(data.currentMonth.TLT*100).toPrecision(2)}%
+        div
+            p Previous Month Returns SPY: #{(data.previousMonth.SPY*100).toPrecision(2)}% TLT: #{(data.previousMonth.TLT*100).toPrecision(2)}%
+        div
+            p who out performed last month???  Be long the other for the first 5 days of the next month. for the last 5 days of the current month be long the under performer.

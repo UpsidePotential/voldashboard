@@ -1,0 +1,30 @@
+mixin premiumChart(selector, historical, latest)
+    script.
+        Highcharts.chart(document.querySelector('#{selector}'), {
+            title: {
+                text: 'VX30 Premium'
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    format: '{value:%Y-%b-%e}'
+                }
+            },
+            legend:{ enabled:false },
+            yAxis: {
+                plotLines: [{
+                color: 'red',
+                width: 1,
+                value: #{latest},
+                zIndex: 10
+                }]
+            },
+            series: [{
+                data: #{historical},
+                step: 'right',
+                name: 'Right',
+                type: 'line'
+            }]
+        });
+
+

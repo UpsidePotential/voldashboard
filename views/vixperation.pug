@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            table
+                tr
+                    th VIX
+                    th VX
+                    th DTE
+                tr
+                    td #{data.vix}
+                    td #{data.vx}
+                    td #{data.dte}
+        div
+            br
+        div
+             table
+                tr 
+                    th Put Strike 
+                    th Ask 
+                    th Break Even 
+                    th BE Rel to VIX
+
+                each val in data.prices 
+                    tr
+                        td #{val.strike}
+                        td #{val.price}
+                        td #{val.breakeven.toPrecision(3)}
+                        td #{val.vixBreakEven.toPrecision(3)}

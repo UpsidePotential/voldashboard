@@ -1,0 +1,5 @@
+mixin vvol(value)
+    if value > 20
+        .zscore-green #{value.toPrecision(3)}
+    else 
+        .zscore-red #{value.toPrecision(3)}

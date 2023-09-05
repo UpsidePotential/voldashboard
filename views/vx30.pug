@@ -1,0 +1,17 @@
+extends layout
+include mixins/premiumChart
+include mixins/vixtable
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div#premium
+            +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
+        div
+            +vixtable(data.latest)
+        div
+            p backtest results
+        div
+            p historical positions 

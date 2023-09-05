@@ -1,0 +1,22 @@
+mixin rvolChart(selector, title, rvol)
+    script.
+        Highcharts.chart(document.querySelector('#{selector}'), {
+            title: {
+                text: '#{title}'
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    format: '{value:%Y-%b-%e}'
+                }
+            },
+            legend:{ enabled:false },
+            series: [{
+                data: #{rvol},
+                step: 'right',
+                name: 'Right',
+                type: 'line'
+            }]
+        });
+
+

@@ -1,0 +1,9 @@
+mixin zscore(value)
+    if value > -1
+        .zscore-green #{value.toPrecision(3)}
+    else if value > -1.25
+        .zscore-yellow #{value.toPrecision(3)}
+    else if value > -1.75
+         .zscore-red #{value.toPrecision(3)}
+    else 
+        .zscore-red #{value.toPrecision(3)}

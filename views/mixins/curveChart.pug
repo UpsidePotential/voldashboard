@@ -1,0 +1,26 @@
+mixin curveChart(selector, names, prices)
+    script.
+        Highcharts.chart(document.querySelector('#{selector}'), {
+            title: {
+                text: 'VX Futures'
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    format: '{value:%Y-%b-%e}'
+                }
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend:{ enabled:false },
+            series: [{
+                data: #{prices},
+                step: 'right',
+                type: 'spline'
+            }]
+        });

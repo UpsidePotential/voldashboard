@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            table
+                tr
+                    th Description
+                    th Futures
+                    th Notional 
+                    th ETF Shares
+
+                each val in data 
+                    tr
+                        td #{val.description}
+                        td #{val.symbol}
+                        td #{val.notional.toLocaleString('us-US', { style: 'currency', currency: 'USD' })}
+                        td #{val.etf_shares} #{val.etf_symbol}

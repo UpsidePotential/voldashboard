@@ -1,0 +1,41 @@
+extends layout
+include mixins/curveChart
+include mixins/premiumChart
+include mixins/vixtable
+include mixins/vxContracts
+include mixins/rvolchart
+include mixins/spxcurveChart
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            script(src="https://code.highcharts.com/highcharts.js")
+            div#vixCurve
+            +curveChart('#vixCurve', 'data.names', 'data.prices')
+        div
+            +vxcontracts(data.vxFuturesData)
+        div
+            br
+        div
+            +vixtable(data.latest)
+        div 
+            div#spxivol
+            +spxcurveChart('#spxivol', 'data.spxIVols')
+        div
+            div#premium
+            +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
+        div
+            div#rvol
+            +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30')
+        div
+            div#vrp
+            +rvolChart('#vrp', '30 Day VRP ZScore', 'data.vrp.d30Zscore')
+        div
+            div#ivts
+            +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts')
+        div
+            div#vvol
+            +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol')

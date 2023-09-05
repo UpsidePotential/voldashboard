@@ -1,0 +1,15 @@
+mixin ivts(value, vix3m)
+    if(value == null)
+        0
+    else if vix3m < 15 && value < 0.85
+        .zscore-green #{value.toPrecision(3)}
+    else if vix3m < 17 && value < 0.9
+        .zscore-green #{value.toPrecision(3)}
+    else if vix3m < 20 && value < 0.95
+        .zscore-green #{value.toPrecision(3)}
+    else if vix3m < 25 && value < 1.0
+        .zscore-green #{value.toPrecision(3)}
+    else if value > 1.1
+        .zscore-red #{value.toPrecision(3)}
+    else
+        .zscore-yellow #{value.toPrecision(3)}
