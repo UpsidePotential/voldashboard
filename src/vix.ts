@@ -51,6 +51,10 @@ export const getVIXData = async () : Promise<any> => {
  const result = await fetchVixData();
   const prices = result.data.prices.reverse();
 
+  if(prices.length == 0) {
+    return [];
+  }
+
   return result.data.expirations.map((element: any) => {
     const price = prices.find( (n: any) => n.index_symbol == element.symbol);
     const expDate = new Date(element.expirationDate);
