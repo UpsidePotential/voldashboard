@@ -1,5 +1,7 @@
-import { buildVXData, FuturesContract } from "../vix";
+import { buildVXData, getVXFuturesData, getNumberOfDays, convertContractName, buildVXSpreads } from "../vix";
 import { VXEntry, VXEntryModel } from "../vxModel";
+import { VXContractEntryModel } from '../vxContracts' 
+import { VXSpreadEntryModel } from "../vxSpread";
 
 export const updateVXData = async (): Promise<VXEntry> => {
     const vx_sum = await VXEntryModel.find().exec()
@@ -30,4 +32,40 @@ export const updateVXData = async (): Promise<VXEntry> => {
     }
 
     return newData;
+}
+
+export const updateVXCalenderData = async (): Promise<void> => {
+
+    const vxContracts = (await getVXFuturesData()).filter((x: any) => x.last_price > 0);
+
+    for( const [i, contract] of vxContracts.entries()) {
+        const doc = new VXContractEntryModel({
+            date: new Date(),
+            name: convertContractName(contract.ticker),
+            open: contract.open,
+            close: contract.last_price,
+            expiry: new Date(contract.expiration),
+            volume: contract.volume,
+            openinterest: contract.prev_open_int,
+            c2c_logreturn: Math.log(contract.last_price / contract.prev_close),
+            dte: getNumberOfDays(new Date(), new Date(contract.expiration)),
+            contract: i+1,
+        });
+
+        try {
+            await doc.save();
+        } catch(e) {
+            console.error(`failed to update vx contract: ${e}`)
+        }
+    }
+
+    const spreads = buildVXSpreads(vxContracts);
+    for( const [i, spread] of spreads.entries()) {
+        try {
+            const doc = new VXSpreadEntryModel(spread);
+            await doc.save();
+        } catch(e) {
+            console.error(`failed to update vx spread: ${e}`)
+        }
+    }
 }

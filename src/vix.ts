@@ -2,6 +2,7 @@ import got from 'got';
 import yahooFinance from 'yahoo-finance2'; 
 
 import { VXEntry } from "./vxModel";
+import { VXSpreadEntry } from './vxSpread';
 
 export interface FuturesContract {
     active: boolean;
@@ -15,7 +16,7 @@ export interface FuturesContract {
     'streamer-symbol': string;
 }
 
-const cboeVixEndpoint = (date: Date): string => {
+export const cboeVixEndpoint = (date: Date): string => {
   const year = date.getFullYear();
   
   // JavaScript months are 0-indexed, so we add 1 to get the correct month
@@ -66,6 +67,17 @@ export const getVIXData = async () : Promise<any> => {
 export const getVXFuturesData = async () : Promise<any[]> => {
   const vxData = await got('https://www.cboe.com/us/futures/api/get_quotes_combined/?symbol=VX&rootsymbol=null').json() as any;
   return vxData.data.filter((x: any)=> x.symbol.length == 5)
+}
+
+export const convertContractName = (name: string): string => {
+  // cboe name 'VX/Z3'
+  // rw name 'VX-2024M'
+
+  const monthCode = name.charAt(3);
+  const yearCode = name.charAt(4);
+  const yearBase = new Date().getFullYear().toString().slice(0,-1);
+  
+  return `VX-${yearBase}${yearCode}${monthCode}`;
 }
 
 interface DteWeights {
@@ -272,6 +284,39 @@ export const rollingZScore = (arr: number[], windowSize: number): number[] => {
     }
 
     return vxData;
+}
+
+const buildVxPair = (a: any, b: any, name: string): VXSpreadEntry => {
+  const level = (a.last_price + b.last_price) * 0.5
+  const front = a.last_price;
+  const back = b.last_price;
+
+  const pointslope = a.last_price - b.last_price;
+  const logslope = Math.log(a.last_price / b.last_price)
+
+  return {
+    date: new Date().valueOf(),
+    name,
+    level,
+    front,
+    back,
+    dte: getNumberOfDays(new Date(), new Date(a.expiration)),
+    pointslope,
+    logslope,
+    logreturns: Math.log(b.last_price / b.prev_close) - Math.log(a.last_price / a.prev_close),
+  }
+  
+}
+
+export const buildVXSpreads = (vxfutures: any[]) : VXSpreadEntry[] => {
+  const calenders: VXSpreadEntry[] = [];
+
+  calenders.push(buildVxPair(vxfutures[0], vxfutures[1], "vx12"));
+  calenders.push(buildVxPair(vxfutures[1], vxfutures[2], "vx23"));
+  calenders.push(buildVxPair(vxfutures[2], vxfutures[3], "vx34"));
+  calenders.push(buildVxPair(vxfutures[3], vxfutures[4], "vx45"));
+  calenders.push(buildVxPair(vxfutures[4], vxfutures[5], "vx56"));
+  return calenders;
 }
 
 export const calculateContango = (currentPrice: number, nextPrice: number): number => {
