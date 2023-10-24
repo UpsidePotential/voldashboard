@@ -41,7 +41,7 @@ export const updateVXCalenderData = async (): Promise<void> => {
     for( const [i, contract] of vxContracts.entries()) {
         const doc = new VXContractEntryModel({
             date: new Date(),
-            name: convertContractName(contract.ticker),
+            name: convertContractName(contract.symbol),
             open: contract.open,
             close: contract.last_price,
             expiry: new Date(contract.expiration),

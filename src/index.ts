@@ -5,7 +5,7 @@ import { routes } from './routes';
 import { connect } from 'mongoose';
 import { WebhookClient } from 'discord.js';
 import { scheduleJob } from 'node-schedule';
-import { updateVXData } from './services/onCloseUpdate';
+import { updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
 import { updateHoldings } from './services/updateHoldings';
 import * as CometdNodejsClient from 'cometd-nodejs-client'
 import NodeCache from 'node-cache';
@@ -60,6 +60,8 @@ const webhookClient = new WebhookClient({ url: process.env.WEB_HOOK_URL });
 scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
     console.log(`${Date.now()} update vx data`);
     const vxdata = await updateVXData();
+    await updateVXCalenderData();
+
   });
 
   scheduleJob({ rule: '30 14 * * 1-5', tz: 'America/Chicago' }, async () => {
