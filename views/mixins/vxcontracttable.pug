@@ -1,0 +1,25 @@
+mixin vxcontracttable(contracts)
+    table 
+        tr
+            th Contract
+            th front
+            th back
+            th logslope
+            th std dev
+            th z score
+        each n in contracts
+            tr
+                td
+                    .vxtd= n.name
+                td 
+                    .vxtd= n.front
+                td
+                    .vxtd= n.back
+                td
+                    .vxtd= n.logslope[0].toPrecision(3)
+                td
+                    .vxtd= n.stdDev[0].toPrecision(3)
+                td
+                    .vxtd= n.zscore[0].toPrecision(3)
+
+

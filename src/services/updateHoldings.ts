@@ -2,6 +2,11 @@ import { WebhookClient, EmbedBuilder } from 'discord.js';
 import got from 'got';
 
 const getHoldings = async (title: string, url: string, webhook: WebhookClient): Promise<void> => {
+
+    if(process.env.NODE_ENV === 'development') {
+        return;
+    }
+
     got(url).then( (response) => {
         const backtestData = JSON.parse(response.body);
         const embed = new EmbedBuilder()
