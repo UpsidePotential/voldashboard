@@ -8,11 +8,11 @@ export const vxCalendar = Router();
 const vxSpread = (spread: any, currentSpread: any): any => {
 
     // append current spread on to this spread.
-    spread.unshift(currentSpread);
-    const logReturns = spread.map( (value: any) => value.logreturns);
+    spread.push(currentSpread);
+    const logReturns = spread.map( (value: any) => [value.date, value.logreturns]);
     const stdDev = simpleMovingStdDev(logReturns, 252);
 
-    const logslope = spread.map( (value: any) => value.logslope);
+    const logslope = spread.map( (value: any) => [value.date, value.logslope]);
     const zscore = rollingZScore(logslope, 252);
 
     return {

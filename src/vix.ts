@@ -174,58 +174,58 @@ export const simpleMovingAverage = (prices: number[], interval: number): number[
     return results;
 }
 
-export const simpleMovingStdDev = (arr: number[], windowSize: number): number[] => {
-    const result = [];
+export const simpleMovingStdDev = (arr: number[][], windowSize: number): number[][] => {
+    const result: any = [];
     let sum = 0;
     let sumOfSquares = 0;
   
     // Calculate the sum and sum of squares for the initial window
     for (let i = 0; i < windowSize; i++) {
-      sum += arr[i];
-      sumOfSquares += arr[i] * arr[i];
+      sum += arr[i][1];
+      sumOfSquares += arr[i][1] * arr[i][1];
     }
   
-    result.push(Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize));
+    //result.push([0, Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize)]);
   
     // Calculate the rolling standard deviation for the remaining elements
     for (let i = windowSize; i < arr.length; i++) {
-      sum += arr[i] - arr[i - windowSize];
-      sumOfSquares += arr[i] * arr[i] - arr[i - windowSize] * arr[i - windowSize];
-      result.push(Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize));
+      sum += arr[i][1] - arr[i - windowSize][1];
+      sumOfSquares += arr[i][1] * arr[i][1] - arr[i - windowSize][1] * arr[i - windowSize][1];
+      result.push([arr[i][0], Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize)]);
     }
   
     return result;
 }
 
-export const rollingZScore = (arr: number[], windowSize: number): number[] => {
+export const rollingZScore = (arr: number[][], windowSize: number): number[][] => {
     if (arr.length <= windowSize) {
       throw new Error("Array length should be greater than the window size.");
     }
   
-    const result = [];
+    const result: any = [];
     let sum = 0;
     let sumOfSquares = 0;
   
     // Calculate the sum and sum of squares for the initial window
     for (let i = 0; i < windowSize; i++) {
-      sum += arr[i];
-      sumOfSquares += arr[i] * arr[i];
+      sum += arr[i][1];
+      sumOfSquares += arr[i][1] * arr[i][1];
     }
   
     const mean = sum / windowSize;
     const stdDev = Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize);
   
-    result.push((arr[0] - mean) / stdDev);
+    //result.push([0, (arr[0][1] - mean) / stdDev]);
   
     // Calculate the rolling Z-score for the remaining elements
     for (let i = windowSize; i < arr.length; i++) {
-      sum += arr[i] - arr[i - windowSize];
-      sumOfSquares += arr[i] * arr[i] - arr[i - windowSize] * arr[i - windowSize];
+      sum += arr[i][1] - arr[i - windowSize][1];
+      sumOfSquares += arr[i][1] * arr[i][1] - arr[i - windowSize][1] * arr[i - windowSize][1];
   
       const newMean = sum / windowSize;
       const newStdDev = Math.sqrt((sumOfSquares - (sum * sum) / windowSize) / windowSize);
   
-      result.push((arr[i] - newMean) / newStdDev);
+      result.push([arr[i][0], (arr[i][1] - newMean) / newStdDev]);
     }
   
     return result;

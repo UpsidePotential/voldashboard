@@ -1,25 +1,35 @@
+include rvolchart
 mixin vxcontracttable(contracts)
-    table 
-        tr
-            th Contract
-            th front
-            th back
-            th logslope
-            th std dev
-            th z score
-        each n in contracts
+    each n, index in contracts
+        table
+            tr
+                th Contract
+                th front
+                th back
+                th logslope
+                th std dev
+                th z score
+                tr
+                    td
+                        .vxtd= n.name
+                    td 
+                        .vxtd= n.front
+                    td
+                        .vxtd= n.back
+                    td
+                        .vxtd= n.logslope[0][1].toPrecision(3)
+                    td
+                        .vxtd= n.stdDev[0][1].toPrecision(3)
+                    td
+                        .vxtd= n.zscore[0][1].toPrecision(3)
+        table
             tr
                 td
-                    .vxtd= n.name
-                td 
-                    .vxtd= n.front
+                    div(id=`rvol-${index}`)
+                    +rvolChart(`#rvol-${index}`, 'z-score', `data[${index}].zscore`)
                 td
-                    .vxtd= n.back
+                    div(id=`stddiv-${index}`)
+                    +rvolChart(`#stddiv-${index}`, 'std dev', `data[${index}].stdDev`)
                 td
-                    .vxtd= n.logslope[0].toPrecision(3)
-                td
-                    .vxtd= n.stdDev[0].toPrecision(3)
-                td
-                    .vxtd= n.zscore[0].toPrecision(3)
-
-
+                    div(id=`logslope-${index}`)
+                    +rvolChart(`#logslope-${index}`, 'log slope', `data[${index}].logslope`)
