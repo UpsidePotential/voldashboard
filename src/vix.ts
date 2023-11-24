@@ -315,7 +315,7 @@ export const buildVXSpreads = (vxfutures: any[]) : VXSpreadEntry[] => {
   calenders.push(buildVxPair(vxfutures[1], vxfutures[2], "vx23"));
   calenders.push(buildVxPair(vxfutures[2], vxfutures[3], "vx34"));
   calenders.push(buildVxPair(vxfutures[3], vxfutures[4], "vx45"));
-  calenders.push(buildVxPair(vxfutures[4], vxfutures[5], "vx56"));
+  //calenders.push(buildVxPair(vxfutures[4], vxfutures[5], "vx56"));
   return calenders;
 }
 
