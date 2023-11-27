@@ -287,6 +287,19 @@ export const rollingZScore = (arr: number[][], windowSize: number): number[][] =
 }
 
 const buildVxPair = (a: any, b: any, name: string): VXSpreadEntry => {
+  if(a.last_price && b.last_price) {
+    return {
+      date: new Date().valueOf(),
+      name: "",
+      level: 0,
+      front: 0,
+      back : 0,
+      dte: getNumberOfDays(new Date(), new Date(a.expiration)),
+      pointslope: 0,
+      logslope: 0,
+      logreturns: Math.log(b.last_price / b.prev_close) - Math.log(a.last_price / a.prev_close),
+    }
+  }
   const level = (a.last_price + b.last_price) * 0.5
   const front = a.last_price;
   const back = b.last_price;

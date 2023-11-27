@@ -8,7 +8,13 @@ export const vxCalendar = Router();
 const vxSpread = (spread: any, currentSpread: any): any => {
 
     // append current spread on to this spread.
-    spread.push(currentSpread);
+    if(currentSpread) {
+        spread.push(currentSpread);
+    }
+    else {
+        currentSpread = spread[0];
+    }
+    
     const logReturns = spread.map( (value: any) => [value.date, value.logreturns]);
     const stdDev = simpleMovingStdDev(logReturns, 252);
 
