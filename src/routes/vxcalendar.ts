@@ -30,7 +30,7 @@ const vxSpread = (spread: any, currentSpread: any): any => {
 const SpreadNames = ["vx12", "vx23", "vx34", "vx45"];
 
 
-vxCalendar.get('/vxCalendar', async (req, res) => {
+vxCalendar.get('/vxcalendar', async (req, res) => {
 
     const vxContracts = (await getVXFuturesData()).filter((x: any) => x.last_price > 0);
     const currentSpreads = buildVXSpreads(vxContracts);
@@ -46,5 +46,5 @@ vxCalendar.get('/vxCalendar', async (req, res) => {
     });
 
 
-    res.render('vxCalendar', {data });
+    res.render('vxcalendar', {data });
 })
