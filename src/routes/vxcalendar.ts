@@ -12,7 +12,7 @@ const vxSpread = (spread: any, currentSpread: any): any => {
         spread.push(currentSpread);
     }
     else {
-        currentSpread = spread[0];
+        currentSpread = spread[spread.length-1];
     }
     
     const logReturns = spread.map( (value: any) => [value.date, value.logreturns]);
