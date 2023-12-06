@@ -1,0 +1,13 @@
+extends layout
+include mixins/premiumChart
+include mixins/vixtable
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            p VX30 Basis: #{data.latest.vx30_basis_signal_seasonal}
+        div
+            p Bins30: #{data.latest.bins30}
