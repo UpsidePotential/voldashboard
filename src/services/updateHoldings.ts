@@ -45,7 +45,6 @@ const getHoldings = async (title: string, url: string, webhook: WebhookClient[])
         backtestData.positions.forEach((element:any) => {
             embed.addFields(
                 { name: 'Pos', value: `${element.name}`},
-                { name: 'Price', value: `${element.price}`},
             );
         });
         webhook.forEach(hook => {
@@ -60,6 +59,5 @@ export const updateHoldings = async (webhook: WebhookClient[]): Promise<void> =>
 
     await getHoldings('EOM Effects', `${process.env.DASHBOARD_URL}/backtest/execute/eom/eom`, webhook);
     await getHoldings('Window Dressing', `${process.env.DASHBOARD_URL}/backtest/execute/windowdressing`, webhook);
-    await getHoldings('Vix Basis', `${process.env.DASHBOARD_URL}/backtest/execute/vixbasis`, webhook);
     await getVixMegaFactors(webhook);
 }
