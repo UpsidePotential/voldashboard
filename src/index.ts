@@ -61,8 +61,8 @@ scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
 
   });
 
-  scheduleJob({ rule: '30 14 * * 1-5', tz: 'America/Chicago' }, async () => {
-    console.log(`${Date.now()} update vx data`);
+  scheduleJob({ rule: '59 14 * * 1-5', tz: 'America/Chicago' }, async () => {
+    console.log(`${Date.now()} update holdings`);
 
     await updateHoldings(webhookClient);
   });
