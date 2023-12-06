@@ -6,6 +6,7 @@ import { vixbasisroute } from './vixbasis';
 import { vixperation } from './vixperation';
 import { vx30 } from './vx30';
 import { vxCalendar } from './vxcalendar'
+import { vixmega } from './vixmega'
 
 export const routes = express.Router();
 
@@ -16,3 +17,4 @@ routes.use(vx30);
 routes.use(stockbond);
 routes.use(futures);
 routes.use(vxCalendar);
+routes.use(vixmega);
