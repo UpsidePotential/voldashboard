@@ -52,7 +52,10 @@ connect(databaseAcess, {}).then( value => {
   });
 
 
-const webhookClient = new WebhookClient({ url: process.env.WEB_HOOK_URL });
+const webhookClient = [ 
+  new WebhookClient({ url: process.env.WEB_HOOK_URL }), 
+  new WebhookClient({ url: process.env.WEB_HOOK_URL2 })
+]
 
 scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
     console.log(`${Date.now()} update vx data`);

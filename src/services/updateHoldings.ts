@@ -1,7 +1,7 @@
 import { WebhookClient, EmbedBuilder } from 'discord.js';
 import got from 'got';
 
-const getVixMegaFactors = async (webhook: WebhookClient): Promise<void> => {
+const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
     if(process.env.NODE_ENV === 'development') {
         return;
     }
@@ -22,12 +22,14 @@ const getVixMegaFactors = async (webhook: WebhookClient): Promise<void> => {
         { name: 'Vvol', value: `${latest.vvol}`},
     );
     
-    webhook.send({
-        embeds: [embed],
+    webhook.forEach(hook => {
+        hook.send({
+            embeds: [embed],
+        });
     });
 }
 
-const getHoldings = async (title: string, url: string, webhook: WebhookClient): Promise<void> => {
+const getHoldings = async (title: string, url: string, webhook: WebhookClient[]): Promise<void> => {
 
     if(process.env.NODE_ENV === 'development') {
         return;
@@ -45,13 +47,15 @@ const getHoldings = async (title: string, url: string, webhook: WebhookClient): 
                 { name: 'Price', value: `${element.price}`},
             );
         });
-        webhook.send({
-            embeds: [embed],
-        });
+        webhook.forEach(hook => {
+            hook.send({
+                embeds: [embed],
+            });
+        });;
     });
 }
 
-export const updateHoldings = async (webhook: WebhookClient): Promise<void> => {
+export const updateHoldings = async (webhook: WebhookClient[]): Promise<void> => {
 
     await getHoldings('EOM Effects', `${process.env.DASHBOARD_URL}/backtest/execute/eom/eom`, webhook);
     await getHoldings('Window Dressing', `${process.env.DASHBOARD_URL}/backtest/execute/windowdressing`, webhook);
