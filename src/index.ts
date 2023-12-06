@@ -7,14 +7,11 @@ import { WebhookClient } from 'discord.js';
 import { scheduleJob } from 'node-schedule';
 import { updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
 import { updateHoldings } from './services/updateHoldings';
-import * as CometdNodejsClient from 'cometd-nodejs-client'
 import NodeCache from 'node-cache';
 
 const helmet = require('helmet')
 
 require('dotenv').config();
-
-CometdNodejsClient.adapt()
 
 const cache = new NodeCache();
 
