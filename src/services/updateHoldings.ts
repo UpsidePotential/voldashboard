@@ -14,9 +14,10 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
 
     const latest = vixmegadata.data[vixmegadata.data.length-1];
     embed.addFields(
+        { name: 'VIX MegaFactor', value: `${latest.vx30_basis_with_vvol}`},
+        { name: 'Sizing', value: `${latest.bins30}`},
         { name: 'VX30 Basis Signal', value: `${latest.vx30_basis_signal_seasonal}`},
         { name: 'VVOL Signal', value: `${latest.vvol_strategy}`},
-        { name: 'Sizing', value: `${latest.bins30}`},
         { name: 'Premium Z-Score', value: `${latest.premium_zscore}`},
         { name: 'VX30 Carry', value: `${latest.logslope30}`},
         { name: 'Vvol', value: `${latest.vvol}`},
