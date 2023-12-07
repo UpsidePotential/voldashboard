@@ -8,13 +8,20 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
     const rvolData = await got(`${process.env.DASHBOARD_URL}/vixmultistrat`);
     const vixmegadata = JSON.parse(rvolData.body);
 
+    const latest = vixmegadata.data[vixmegadata.data.length-1];
+
     const embed = new EmbedBuilder()
     .setTitle('VIX Mega Trend')
     .setColor(0x00FFFF)
 
-    const latest = vixmegadata.data[vixmegadata.data.length-1];
+    let position = "SVIX";
+
+    if(latest.vx30_basis_with_vvol != 1) {
+        position = "VXX"
+    }
+
     embed.addFields(
-        { name: 'VIX MegaFactor', value: `${latest.vx30_basis_with_vvol}`},
+        { name: 'Position', value: position},
         { name: 'Sizing', value: `${latest.bins30}`},
         { name: 'VX30 Basis Signal', value: `${latest.vx30_basis_signal_seasonal}`},
         { name: 'VVOL Signal', value: `${latest.vvol_strategy}`},
@@ -57,7 +64,7 @@ const getHoldings = async (title: string, url: string, webhook: WebhookClient[])
 
 export const updateHoldings = async (webhook: WebhookClient[]): Promise<void> => {
 
-    await getHoldings('EOM Effects', `${process.env.DASHBOARD_URL}/backtest/execute/eom/eom`, webhook);
-    await getHoldings('Window Dressing', `${process.env.DASHBOARD_URL}/backtest/execute/windowdressing`, webhook);
+    //await getHoldings('EOM Effects', `${process.env.DASHBOARD_URL}/backtest/execute/eom/eom`, webhook);
+    //await getHoldings('Window Dressing', `${process.env.DASHBOARD_URL}/backtest/execute/windowdressing`, webhook);
     await getVixMegaFactors(webhook);
 }
