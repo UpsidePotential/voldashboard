@@ -60,5 +60,5 @@ defaultRoute.get('/', async (req, res) => {
   latest.ivts = vixBasis.ivts[vixBasis.ivts.length -1 ][1];
   latest.vvol = vixBasis.vvol[vixBasis.vvol.length -1 ][1];
 
-    res.render('index', {data: {prices: vxPrices, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols }});
+    res.render('index', {data: {prices: vxPrices, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols, realtime: !req.app.locals.marketData.isDelay() }});
 });

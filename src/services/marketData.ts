@@ -9,17 +9,10 @@ export class MarketData {
 
     client: any;
     latestQuotes = new Map<string, Quote>();
+    delayed: boolean = true;
 
     constructor() {
-        // {token: process.env.TV_TOKEN, signature: process.env.TV_SIG}
         this.client = new TradingView.Client(); 
-        TradingView.loginUser(encodeURIComponent(process.env.TV_USER), encodeURIComponent(process.env.TV_PASS), false).then((user: any) => {
-            console.log('User:', user);
-            console.log('Sessionid:', user.session);
-            console.log('Signature:', user.signature);
-          }).catch((err: any) => {
-            console.error('Login error:', err.message);
-          });
     }
 
     subscribe(symbol: string): void {
@@ -27,12 +20,31 @@ export class MarketData {
 
         const quoteMarket = new quoteSession.Market(symbol);
         quoteMarket.onData(async (data: any) => {
-          this.latestQuotes.set(data.original_name, {value: data.lp, datetime: data.lp_time});
+          this.latestQuotes.set(data.pro_name, {value: data.lp, datetime: data.lp_time});
+          if (data.update_mode && data.update_mode.includes('delayed')) {
+            this.delayed = true;
+          }
         });
     }
 
     latestQuote(symbol: string): Quote {
         return this.latestQuotes.get(symbol);
+    }
+
+    isDelay(): boolean {
+      return this.delayed;
+    }
+
+    async login(): Promise<void> {
+      try {
+        const user = await TradingView.loginUser(encodeURIComponent(process.env.TV_USER), encodeURIComponent(process.env.TV_PASS), false);
+        console.log('User:', user);
+        console.log('Sessionid:', user.session);
+        console.log('Signature:', user.signature);
+      } catch(e) {
+        console.log(e);
+      }
+      
     }
 
 }

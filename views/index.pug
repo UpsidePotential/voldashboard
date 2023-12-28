@@ -12,6 +12,10 @@ block content
 
     .container
         div
+          table 
+            tr Real time data feed:
+            tr #{data.realtime}
+        div
             script(src="https://code.highcharts.com/highcharts.js")
             div#vixCurve
             +curveChart('#vixCurve', 'data.names', 'data.prices')
