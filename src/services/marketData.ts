@@ -11,7 +11,15 @@ export class MarketData {
     latestQuotes = new Map<string, Quote>();
 
     constructor() {
-        this.client = new TradingView.Client({token: process.env.TV_TOKEN, signature: process.env.TV_SIG}); 
+        // {token: process.env.TV_TOKEN, signature: process.env.TV_SIG}
+        this.client = new TradingView.Client(); 
+        TradingView.loginUser(encodeURIComponent(process.env.TV_USER), encodeURIComponent(process.env.TV_PASS), true).then((user: any) => {
+            console.log('User:', user);
+            console.log('Sessionid:', user.session);
+            console.log('Signature:', user.signature);
+          }).catch((err: any) => {
+            console.error('Login error:', err.message);
+          });
     }
 
     subscribe(symbol: string): void {
