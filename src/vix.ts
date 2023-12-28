@@ -1,5 +1,5 @@
 import got from 'got';
-import yahooFinance from 'yahoo-finance2'; 
+import { MarketData } from './services/marketData';
 
 import { VXEntry } from "./vxModel";
 import { VXSpreadEntry } from './vxSpread';
@@ -75,9 +75,24 @@ export const convertContractName = (name: string): string => {
 
   const monthCode = name.charAt(3);
   const yearCode = name.charAt(4);
+
+  // lol this is a 2029 problem, see you then
   const yearBase = new Date().getFullYear().toString().slice(0,-1);
   
   return `VX-${yearBase}${yearCode}${monthCode}`;
+}
+
+export const convertContractNameTV = (name: string): string => {
+  // cboe name 'VX/Z3'
+  // TV name 'CBOE:VXF2024'
+
+  const monthCode = name.charAt(3);
+  const yearCode = name.charAt(4);
+
+  // lol this is a 2029 problem, see you then
+  const yearBase = new Date().getFullYear().toString().slice(0,-1);
+  
+  return `CBOE:VX${monthCode}${yearBase}${yearCode}`;
 }
 
 interface DteWeights {
@@ -241,18 +256,18 @@ export const rollingZScore = (arr: number[][], windowSize: number): number[][] =
     return newStandardDeviation;
   }
   
-  export const buildVXData = async (historicalvxData: VXEntry[]) : Promise<VXEntry> => {
+  export const buildVXData = async (marketData: MarketData, historicalvxData: VXEntry[]) : Promise<VXEntry> => {
     const fromDate = new Date()
     const toDate = new Date()
     fromDate.setDate(fromDate.getDate() - 5);
 
     const vxFutsData = await getVXFuturesData(); 
 
-    const vix = (await yahooFinance.quote('^VIX')).regularMarketPrice;
-    const vix3m = (await yahooFinance.quote('^VIX3M')).regularMarketPrice;
+    const vix = marketData.latestQuote('CBOE:VIX').value;
+    const vix3m = marketData.latestQuote('CBOE:VIX3M').value;
 
-    const vx1 = vxFutsData[0].last_price;
-    const vx2 = vxFutsData[1].last_price;
+    const vx1 = marketData.latestQuote(convertContractNameTV(vxFutsData[0].symbol)).value;
+    const vx2 = marketData.latestQuote(convertContractNameTV(vxFutsData[1].symbol)).value;
 
     const lastVXData = historicalvxData[historicalvxData.length-1];
 

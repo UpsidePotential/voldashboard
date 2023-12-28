@@ -2,10 +2,11 @@ import { buildVXData, getVXFuturesData, getNumberOfDays, convertContractName, bu
 import { VXEntry, VXEntryModel } from "../vxModel";
 import { VXContractEntryModel } from '../vxContracts' 
 import { VXSpreadEntryModel } from "../vxSpread";
+import { MarketData } from "./marketData";
 
-export const updateVXData = async (): Promise<VXEntry> => {
+export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => {
     const vx_sum = await VXEntryModel.find().exec()
-    const newData = await buildVXData(vx_sum);
+    const newData = await buildVXData(marketData, vx_sum);
 
     const doc = new VXEntryModel({
         date: newData.date,

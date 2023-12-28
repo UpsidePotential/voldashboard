@@ -14,7 +14,7 @@ defaultRoute.get('/', async (req, res) => {
   
     const vx_sum = await VXEntryModel.find().exec()
 
-    const newData = await buildVXData(vx_sum);
+    const newData = await buildVXData(req.app.locals.marketData, vx_sum);
     {
       const date = new Date()
       date.setDate(date.getDate() + 30);

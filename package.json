@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mathieuc/tradingview": "^3.4.2",
     "ajv": "8.10.0",
     "body-parser": "^1.20.2",
     "cheerio": "1.0.0-rc.12",

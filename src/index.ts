@@ -7,7 +7,10 @@ import { WebhookClient } from 'discord.js';
 import { scheduleJob } from 'node-schedule';
 import { updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
 import { updateHoldings } from './services/updateHoldings';
+import { MarketData } from './services/marketData';
 import NodeCache from 'node-cache';
+import { convertContractNameTV, getVXFuturesData } from './vix';
+
 
 const helmet = require('helmet')
 
@@ -44,6 +47,7 @@ connect(databaseAcess, {}).then( value => {
 
 
   app.locals.nodeCache = cache;
+  app.locals.marketData = new MarketData();
 
   const PORT = process.env.PORT || 80;
   const server = app.listen(PORT, () => {
@@ -57,9 +61,19 @@ const webhookClient = [
   new WebhookClient({ url: process.env.WEB_HOOK_URL2 })
 ]
 
+app.locals.marketData.subscribe('CBOE:VIX');
+app.locals.marketData.subscribe('CBOE:VIX3M');
+app.locals.marketData.subscribe('CBOE:SPX');
+
+getVXFuturesData().then( (futures: any[]) => {
+  futures.forEach( future => { 
+    app.locals.marketData.subscribe(convertContractNameTV(future.symbol));
+  });
+});
+
 scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
     console.log(`${Date.now()} update vx data`);
-    const vxdata = await updateVXData();
+    const vxdata = await updateVXData(app.locals.marketData);
     await updateVXCalenderData();
 
   });

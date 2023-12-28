@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { buildVXData, FuturesContract, getNumberOfDays, getVXFuturesData, vixOptionsChain, vxContractDTE} from '../vix';
-
-import yahooFinance from 'yahoo-finance2'; 
+import { getNumberOfDays, getVXFuturesData, vixOptionsChain} from '../vix';
 
 export const vixperation = Router();
 
