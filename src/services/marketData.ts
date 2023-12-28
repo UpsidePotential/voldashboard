@@ -13,7 +13,7 @@ export class MarketData {
     constructor() {
         // {token: process.env.TV_TOKEN, signature: process.env.TV_SIG}
         this.client = new TradingView.Client(); 
-        TradingView.loginUser(encodeURIComponent(process.env.TV_USER), encodeURIComponent(process.env.TV_PASS), true).then((user: any) => {
+        TradingView.loginUser(encodeURIComponent(process.env.TV_USER), encodeURIComponent(process.env.TV_PASS), false).then((user: any) => {
             console.log('User:', user);
             console.log('Sessionid:', user.session);
             console.log('Signature:', user.signature);
