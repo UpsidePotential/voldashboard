@@ -1,5 +1,6 @@
 import { WebhookClient, EmbedBuilder } from 'discord.js';
 import got from 'got';
+import { VixTsunami } from '../vix';
 
 const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
     if(process.env.NODE_ENV === 'development') {
@@ -7,8 +8,9 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
     }
     const rvolData = await got(`${process.env.DASHBOARD_URL}/vixmultistrat`);
     const vixmegadata = JSON.parse(rvolData.body);
-
     const latest = vixmegadata.data[vixmegadata.data.length-1];
+
+    const vixtsunami = await VixTsunami();
 
     const embed = new EmbedBuilder()
     .setTitle('VIX Mega Trend')
@@ -28,6 +30,10 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
         { name: 'Premium Z-Score', value: `${latest.premium_zscore}`},
         { name: 'VX30 Carry', value: `${latest.logslope30}`},
         { name: 'Vvol', value: `${latest.vvol}`},
+    ).addFields(
+        { name: 'Tsunami Long Vix', value: vixtsunami.LongSignal },
+        { name: 'Tsunami Long VVIX', value: vixtsunami.LongSignal },
+        { name: 'Tsunami Sell Vix', value: vixtsunami.VvixSignal },
     );
     
     webhook.forEach(hook => {

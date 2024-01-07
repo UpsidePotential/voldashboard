@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { buildVXData, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData } from "../vix"
+import { buildVXData, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami } from "../vix"
 import { VXEntryModel } from '../vxModel';
 
 export const defaultRoute = Router();
@@ -60,5 +60,7 @@ defaultRoute.get('/', async (req, res) => {
   latest.ivts = vixBasis.ivts[vixBasis.ivts.length -1 ][1];
   latest.vvol = vixBasis.vvol[vixBasis.vvol.length -1 ][1];
 
-    res.render('index', {data: {prices: vxPrices, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols, realtime: !req.app.locals.marketData.isDelay() }});
+  const vixtsunami = await VixTsunami();
+
+    res.render('index', {data: {prices: vxPrices, vixtsunami, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols, realtime: !req.app.locals.marketData.isDelay() }});
 });
