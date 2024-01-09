@@ -32,8 +32,8 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
         { name: 'Vvol', value: `${latest.vvol}`},
     ).addFields(
         { name: 'Tsunami Long Vix', value: vixtsunami.LongSignal },
-        { name: 'Tsunami Long VVIX', value: vixtsunami.LongSignal },
-        { name: 'Tsunami Sell Vix', value: vixtsunami.VvixSignal },
+        { name: 'Tsunami Long VVIX', value: vixtsunami.VvixSignal },
+        { name: 'Tsunami Sell Vix', value: vixtsunami.SellSignal },
     );
     
     webhook.forEach(hook => {
