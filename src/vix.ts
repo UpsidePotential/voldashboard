@@ -30,6 +30,10 @@ export const vixOptionsChain = async (): Promise<any> => {
   return got('https://cdn.cboe.com/api/global/delayed_quotes/options/_VIX.json').json() as any;
 }
 
+export const spxOptionsChain = async (): Promise<any> => {
+  return got('https://cdn.cboe.com/api/global/delayed_quotes/options/_SPX.json').json() as any;
+}
+
 
 const fetchVixData = async () : Promise<any> => {
   let retry = 0

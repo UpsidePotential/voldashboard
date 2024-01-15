@@ -5,7 +5,7 @@ import { routes } from './routes';
 import { connect } from 'mongoose';
 import { WebhookClient } from 'discord.js';
 import { scheduleJob } from 'node-schedule';
-import { updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
+import { updateSPXOptionsData, updateVIXOptionsData, updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
 import { updateHoldings } from './services/updateHoldings';
 import { MarketData } from './services/marketData';
 import NodeCache from 'node-cache';
@@ -75,6 +75,8 @@ scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
     console.log(`${Date.now()} update vx data`);
     const vxdata = await updateVXData(app.locals.marketData);
     await updateVXCalenderData();
+    await updateVIXOptionsData();
+    await updateSPXOptionsData();
 
   });
 
