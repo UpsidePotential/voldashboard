@@ -1,4 +1,4 @@
-import { buildVXData, getVXFuturesData, getNumberOfDays, convertContractName, buildVXSpreads, vixOptionsChain, spxOptionsChain } from "../vix";
+import { buildVXData, getVXFuturesData, getNumberOfDays, convertContractName, buildVXSpreads, vixOptionsChain, spxOptionsChain, parseOptionsCode, VIXOptionsChain } from "../vix";
 import { VXEntry, VXEntryModel } from "../vxModel";
 import { VXContractEntryModel } from '../vxContracts' 
 import { VXSpreadEntryModel } from "../vxSpread";
@@ -35,44 +35,6 @@ export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => 
     }
 
     return newData;
-}
-
-interface VIXOption {
-    ask: number;
-    bid: number;
-    delta: number;
-    low: number;
-    high: number;
-    open: number;
-    open_interest: number;
-    option: string;
-    iv: number;
-}
-
-interface VIXOptionsChain {
-    date: number;
-    options: VIXOption[]
-}
-//const optionscode = `VIX${year}${month}${vx1Exp.getDate()}P`;
-interface VIXOptionCode {
-    exp: number;
-    strike: number;
-    type: string;
-}
-
-const parseOptionsCode = (option: string): VIXOptionCode => {
-    // const underlyingSymbol = option.substring(0, 3);
-    const expirationDate = option.substring(3, 9);
-    const optionType = option.charAt(9);
-    const strikePrice = option.substring(10, 15);
-
-    const date = new Date(expirationDate.replace(/(\d{2})(\d{2})(\d{2})/, '20$1-$2-$3')).valueOf();
-
-    //const strikeString = option.substring(optionscode.length)
-    // Strike Price (#####.###) listed with five digits before the decimal and three digits following the decimal
-    const strike = parseFloat(strikePrice.substring(0,5) + '.' + strikePrice.substring(5))
-
-    return {exp: date, strike, type: optionType};
 }
 
 export const updateVIXOptionsData = async (): Promise<void> => {

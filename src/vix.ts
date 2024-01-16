@@ -407,3 +407,41 @@ export const VixTsunami = async(): Promise<VixTsunamiSignals> => {
 
   return {SellSignal,  LongSignal, VvixSignal}
 }
+
+interface VIXOption {
+  ask: number;
+  bid: number;
+  delta: number;
+  low: number;
+  high: number;
+  open: number;
+  open_interest: number;
+  option: string;
+  iv: number;
+}
+
+export interface VIXOptionsChain {
+  date: number;
+  options: VIXOption[]
+}
+//const optionscode = `VIX${year}${month}${vx1Exp.getDate()}P`;
+interface VIXOptionCode {
+  exp: number;
+  strike: number;
+  type: string;
+}
+
+export const parseOptionsCode = (option: string): VIXOptionCode => {
+  // const underlyingSymbol = option.substring(0, 3);
+  const expirationDate = option.substring(3, 9);
+  const optionType = option.charAt(9);
+  const strikePrice = option.substring(10, 15);
+
+  const date = new Date(expirationDate.replace(/(\d{2})(\d{2})(\d{2})/, '20$1-$2-$3')).valueOf();
+
+  //const strikeString = option.substring(optionscode.length)
+  // Strike Price (#####.###) listed with five digits before the decimal and three digits following the decimal
+  const strike = parseFloat(strikePrice.substring(0,5) + '.' + strikePrice.substring(5))
+
+  return {exp: date, strike, type: optionType};
+}
