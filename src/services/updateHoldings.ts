@@ -18,8 +18,12 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
 
     let position = "SVIX";
 
-    if(latest.vx30_basis_with_vvol != 1) {
-        position = "VXX"
+    if(latest.vx30_basis_with_vvol == 0) {
+        position = "FLAT";
+    } else if(latest.vx30_basis_with_vvol == 1) {
+        position = "SVIX";
+    } else {
+        position = "VXX";
     }
 
     embed.addFields(
