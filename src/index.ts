@@ -43,8 +43,6 @@ const databaseAcess = `mongodb+srv://${process.env.DB_USER
 
 connect(databaseAcess, {}).then( value => {
     console.log('connected to mongo');
-
-    updateHoldings(webhookClient);
 });
 
 

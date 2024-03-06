@@ -83,32 +83,6 @@ const appendToCSVFile = (filePath: string, dataToAppend: any[]) => {
     csvFormatter.end();
   }
 
-  const appendOneToCSVFile = (filePath: string, dataToAppend: any) => {
-    // Check if the file exists
-    let headers = false;
-    if (!fs.existsSync(filePath)) {
-        headers = true;
-    }
-  
-    // Create a writable stream to append data to the file
-    const writableStream = fs.createWriteStream(filePath, { flags: 'a' });
-  
-    // Create a CSV formatter
-    const csvFormatter = format({ headers });
-  
-    // Pipe the CSV formatter to the writable stream
-    csvFormatter.pipe(writableStream);
-  
-
-    csvFormatter.write(dataToAppend);
-    
-
-    writableStream.write('\n');
-  
-    // End the CSV formatting and close the writable stream
-    csvFormatter.end();
-  }
-
 const parseNumber = (value: string): number => {
     const num = Number(value);
     if(isNaN(num))
@@ -185,6 +159,8 @@ async function downloadSPXTermStructure() {
         const data = await fetchVixData(date);
         const prices = data.data.prices.reverse();
 
+        
+
         if(prices.length == 0) {
             console.error('empty prices')
           continue;
@@ -196,24 +172,11 @@ async function downloadSPXTermStructure() {
           const price = prices.find( (n: any) => n.index_symbol == element.symbol);
           const expDate = new Date(element.expirationDate);
           expDate.setDate(expDate.getDate());
-          return { time: data.reqDate.valueOf(), symbol: element.symbol, month: element.month, expDate: Date.parse(element.expirationDate), price: price.price};
+          return { time: data.reqDate.valueOf(), symbol: element.symbol, mounth: element.month, expDate: Date.parse(element.expirationDate), price: price.price};
         });  
 
-        let spxVix: any = {};
-
-        // Iterate over the list of objects
-        spxData.forEach((obj: any) => {
-            if(obj.month < 6) {
-                spxVix['time'] = obj.time;
-                spxVix[`VIX${obj.month}_price`] = obj.price;
-                spxVix[`VIX${obj.month}_expDate`] = obj.expDate;
-            }
-        });
-
-        
-
         // write to a csv file
-        appendOneToCSVFile('spxVixData.csv', spxVix)
+        appendToCSVFile('spxVixData.csv', spxData)
 
         date = new Date(data.reqDate);
         date.setDate(date.getDate() - 1);
@@ -299,6 +262,6 @@ async function updateVxSpreads() {
 }
 
 
-downloadSPXTermStructure().then( () => {
+updateVxSpreads().then( () => {
     console.log('finished vx contracts')
 })

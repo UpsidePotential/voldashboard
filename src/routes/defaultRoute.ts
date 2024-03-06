@@ -62,5 +62,5 @@ defaultRoute.get('/', async (req, res) => {
 
   const vixtsunami = await VixTsunami();
 
-    res.render('index', {data: {prices: vxPrices, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols, realtime: !req.app.locals.marketData.isDelay() }});
+    res.render('index', {data: {prices: vxPrices, vixtsunami, vxFuturesData, latest, historical: data.slice(data.length-300), rvol, vrp, vixBasis, spxIVols, realtime: !req.app.locals.marketData.isDelay() }});
 });
