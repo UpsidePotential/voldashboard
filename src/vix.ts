@@ -388,15 +388,15 @@ export const VixTsunami = async(): Promise<VixTsunamiSignals> => {
 
   for (let i = vixtsunamidata.length - 1; i >= 0; i--) {
       if (!SellSignal && vixtsunamidata[i].sell_signal === 1) {
-           const date = new Date(vixtsunamidata[i].Date);
+           const date = new Date(vixtsunamidata[i].index);
            SellSignal = date.toISOString().split('T')[0];
       }
       if (!LongSignal && vixtsunamidata[i].long_signal === 1) {
-          const date = new Date(vixtsunamidata[i].Date);
+          const date = new Date(vixtsunamidata[i].index);
           LongSignal = date.toISOString().split('T')[0];
       }
       if (!VvixSignal && vixtsunamidata[i].signal_vvix === 1) {
-          const date = new Date(vixtsunamidata[i].Date);
+          const date = new Date(vixtsunamidata[i].index);
           VvixSignal = date.toISOString().split('T')[0];
       }
 
@@ -424,7 +424,7 @@ export interface VIXOptionsChain {
   date: number;
   options: VIXOption[]
 }
-//const optionscode = `VIX${year}${month}${vx1Exp.getDate()}P`;
+//const optionscode = `VIX${year}${month}${vx1Exfp.getDate()}P`;
 interface VIXOptionCode {
   exp: number;
   strike: number;
