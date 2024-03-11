@@ -7,7 +7,9 @@ mixin premiumChart(selector, historical, latest)
             xAxis: {
                 type: 'datetime',
                 labels: {
-                    format: '{value:%Y-%b-%e}'
+                    formatter:function(){
+                    return Highcharts.dateFormat('%Y-%m-%d',this.value*1000);
+                }
                 }
             },
             legend:{ enabled:false },

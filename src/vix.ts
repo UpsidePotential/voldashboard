@@ -86,6 +86,17 @@ export const convertContractName = (name: string): string => {
   return `VX-${yearBase}${yearCode}${monthCode}`;
 }
 
+export const convertContractNameTW = (name: string): string => {
+  // cboe name 'VX/Z3'
+  // tw name '/VXH24:XCBF'
+
+  const monthCode = name.charAt(3);
+  const yearCode = name.charAt(4);
+  const yearBase = new Date().getFullYear().toString().slice(2,-1);
+
+  return `/VX${monthCode}${yearBase}${yearCode}:XCBF`;
+}
+
 export const convertContractNameTV = (name: string): string => {
   // cboe name 'VX/Z3'
   // TV name 'CBOE:VXF2024'
@@ -305,6 +316,17 @@ export const rollingZScore = (arr: number[][], windowSize: number): number[][] =
     return vxData;
 }
 
+export const premiumZscore = (latestVX30Data: any, vx1: number, vx2: number, vix3m: number) : number => {
+  
+  const vx30 = (vx1 * latestVX30Data['Front Month Weight']) + (vx2 * latestVX30Data['Next Month Weight']);
+  const premium = Math.log(vx30/vix3m)
+  const premium_mean =  ((latestVX30Data['VX30_Premium_Mean_Close'] * 252) + premium) / 253;
+  const premium_sd = recalculateStandardDeviation(latestVX30Data['VX30_Premium_SD_Close'], 252, latestVX30Data['VX30_Premium_Mean_Close'] , premium);
+  const premium_zscore = (premium - premium_mean)/premium_sd;
+
+  return premium_zscore;
+}
+
 const buildVxPair = (a: any, b: any, name: string): VXSpreadEntry => {
   const level = (a.last_price + b.last_price) * 0.5
   const front = a.last_price;
@@ -357,6 +379,15 @@ export const SPXRealizedVol = async (): Promise<RVol> => {
   return JSON.parse(rvolData.body);
 }
 
+export const VX30MarketData = async (): Promise<any> => {
+  const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30data`);
+  return JSON.parse(rvolData.body);
+}
+
+export const LiveData = async (): Promise<any> => {
+  const rvolData = await got(`${process.env.BROKER_URL}/marketdata`);
+  return JSON.parse(rvolData.body);
+}
 
 interface VRP {
   d30: any[];
