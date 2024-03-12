@@ -68,5 +68,5 @@ defaultRoute.get('/', async (req, res) => {
   latest.vx30 = latest.VX30_Close
   latest.premium_zscore = latest.VX30_Premium_zscore_Close
 
-    res.render('index', {data: {vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: data, rvol, vrp, vixBasis, spxIVols, livemarketdata }});
+    res.render('index', {data: {vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: data, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata }});
 });

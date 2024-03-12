@@ -1,0 +1,27 @@
+
+mixin vx30roll(latest)
+    table
+        tr 
+            th VX1 Settle
+            th VX2 Settle
+            th Roll Days 
+            th Tenor Trade Days
+            th VX1 Weight
+            th VX2 Weight
+            th Expiry
+
+        tr 
+            td 
+                .vxtd #{new Date(latest.vx1_settle*1000).toLocaleDateString()}
+            td 
+                .vxtd #{new Date(latest.vx2_settle*1000).toLocaleDateString()}
+            td 
+                .vxtd #{latest.roll_days}
+            td 
+                .vxtd #{latest.tenor_trade_days}
+            td 
+                .vxtd #{latest.vx1_weight.toPrecision(3)}
+            td
+                .vxtd #{latest.vx2_weight.toPrecision(3)}
+            td
+                .vxtd #{new Date(latest.expiry*1000).toLocaleDateString()}

@@ -5,6 +5,7 @@ include mixins/vixtable
 include mixins/vxContracts
 include mixins/rvolchart
 include mixins/spxcurveChart
+include mixins/vx30roll
 
 block content
     script.
@@ -25,6 +26,10 @@ block content
             br
         div
             +vixtable(data.latest)
+        div
+            br
+        div
+            +vx30roll(data.vx30Roll)
         div 
             div#spxivol
             +spxcurveChart('#spxivol', 'data.spxIVols')
