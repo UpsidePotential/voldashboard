@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import NodeCache from 'node-cache'
 
-import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW } from "../vix"
+import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW, VX30RollData } from "../vix"
 
 export const defaultRoute = Router();
 
@@ -22,13 +22,8 @@ defaultRoute.get('/', async (req, res) => {
       
     });
 
-    const nodeCache = (req.app.locals.nodeCache as NodeCache);
-    let vxdata: any = nodeCache.get('vxdata');
-    if (vxdata == undefined) {
-      vxdata = await VX30MarketData();
-      nodeCache.set('vxdata', vxdata, 10800);
-    }
-    
+   
+    const vxdata = await VX30MarketData();
     // need to sort the vx futures by experation date.
 
     const vxFuturesData = vxContracts.map( (value: any) => {
@@ -52,6 +47,7 @@ defaultRoute.get('/', async (req, res) => {
    const rvol = await SPXRealizedVol();
    const vrp = await SPXVRP();
    const vixBasis = await vixbasis();
+   const vx30Roll = await VX30RollData();
 
    const spxVixData = await getVIXData();
    const spxIVols = spxVixData.map( (x:any) => {
@@ -66,15 +62,11 @@ defaultRoute.get('/', async (req, res) => {
   latest.ivts = vixBasis.ivts[vixBasis.ivts.length -1 ][1];
   latest.vvol = vixBasis.vvol[vixBasis.vvol.length -1 ][1];
 
-  // update vx30 to use weightings and livedata
-  const vx1Price = livemarketdata[vxFuturesData[0].twSymbol].close
-  const vx2Price = livemarketdata[vxFuturesData[1].twSymbol].close
+  latest.VIX = latest.VIX_Close
+  latest.VIX3M = latest.VIX3M_Close
+  latest.premium = latest.VX30_Premium_Close
+  latest.vx30 = latest.VX30_Close
+  latest.premium_zscore = latest.VX30_Premium_zscore_Close
 
-  latest.premium_zscore = premiumZscore(latest,vx1Price, vx2Price, livemarketdata.VIX3M.close)
-  latest.vx30 = (vx1Price * latest['Front Month Weight']) + (vx2Price * latest['Next Month Weight']);
-  latest.VIX = Number(livemarketdata.VIX.close)
-  latest.VIX3M = Number(livemarketdata.VIX3M.close)
-  latest.premium = Number(latest.vx30/latest.VIX3M)
-
-    res.render('index', {data: {prices: vxPrices, vxFuturesData, latest, historical: data, rvol, vrp, vixBasis, spxIVols, livemarketdata }});
+    res.render('index', {data: {vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: data, rvol, vrp, vixBasis, spxIVols, livemarketdata }});
 });

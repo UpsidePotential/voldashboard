@@ -28,14 +28,12 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
 
     embed.addFields(
         { name: 'Position', value: position},
-        { name: 'Sizing', value: `${latest.bins30}`},
-        { name: 'VX30 Basis Signal', value: `${latest.vx30_basis_signal_seasonal}`},
+        { name: 'Sizing', value: `${latest.bet_sizing}`},
+        { name: 'VX30 Basis Signal', value: `${latest.vx30_basis_signal}`},
         { name: 'VVOL Signal', value: `${latest.vvol_strategy}`},
         { name: 'Slope Bin', value: `${latest.slope_decile}`},
         { name: 'VIX Bin', value: `${latest.VIX_decile}`},
-        { name: 'Premium Z-Score', value: `${latest.premium_zscore}`},
-        { name: 'VX30 Carry', value: `${latest.logslope30}`},
-        { name: 'Vvol', value: `${latest.vvol}`},
+        { name: 'Premium Z-Score', value: `${latest.VX30_Premium_zscore_Close}`},
     ).addFields(
         { name: 'Tsunami Long Vix', value: `${vixtsunami.LongSignal}` },
         { name: 'Tsunami Long VVIX', value: `${vixtsunami.VvixSignal}` },

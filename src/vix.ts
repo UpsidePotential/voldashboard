@@ -384,6 +384,11 @@ export const VX30MarketData = async (): Promise<any> => {
   return JSON.parse(rvolData.body);
 }
 
+export const VX30RollData = async (): Promise<any> => {
+  const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30_roll`);
+  return JSON.parse(rvolData.body);
+}
+
 export const LiveData = async (): Promise<any> => {
   const rvolData = await got(`${process.env.BROKER_URL}/marketdata`);
   return JSON.parse(rvolData.body);
