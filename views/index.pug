@@ -39,6 +39,10 @@ block content
             div#premium
             +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
         div
+            img(src='https://market-dashboard.waffletrade.lol/vix_next_day')
+        div
+            img(src='https://market-dashboard.waffletrade.lol/vix_carry_histogram')
+        div
             div#vx30Chart
             +candleChart('#vx30Chart', 'data.vx30Chart', 'VX30 Price', 'VX30', '[]', '[]')
         div
@@ -46,13 +50,13 @@ block content
             +candleChart('#vixChart', 'data.vixChart', 'VIX Price', 'VIX', 'data.buyVix', 'data.sellVix')
         div
             div#rvol
-            +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30')
+            +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30.slice(-300)')
         div
             div#vrp
-            +rvolChart('#vrp', '30 Day VRP ZScore', 'data.vrp.d30Zscore')
+            +rvolChart('#vrp', '30 Day VRP ZScore', 'data.vrp.d30Zscore.slice(-300)')
         div
             div#ivts
-            +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts')
+            +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts.slice(-300)')
         div
             div#vvol
-            +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol')
+            +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol.slice(-300)')
