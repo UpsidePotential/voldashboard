@@ -1,11 +1,12 @@
 extends layout
 include mixins/curveChart
-include mixins/premiumChart
+include mixins/candleChart
 include mixins/vixtable
 include mixins/vxContracts
 include mixins/rvolchart
 include mixins/spxcurveChart
 include mixins/vx30roll
+include mixins/premiumChart
 
 block content
     script.
@@ -18,6 +19,7 @@ block content
             tr true
         div
             script(src="https://code.highcharts.com/highcharts.js")
+            script(src="https://code.highcharts.com/stock/modules/stock.js")
             div#vixCurve
             +curveChart('#vixCurve', 'data.names', 'data.prices')
         div
@@ -36,6 +38,12 @@ block content
         div
             div#premium
             +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
+        div
+            div#vx30Chart
+            +candleChart('#vx30Chart', 'data.vx30Chart', 'VX30 Price', 'VX30', '[]', '[]')
+        div
+            div#vixChart
+            +candleChart('#vixChart', 'data.vixChart', 'VIX Price', 'VIX', 'data.buyVix', 'data.sellVix')
         div
             div#rvol
             +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30')

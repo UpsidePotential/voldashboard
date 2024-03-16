@@ -40,21 +40,71 @@ defaultRoute.get('/', async (req, res) => {
       }
     })
 
-    const data = vxdata.map( (value: any) => {
+    const vx30PremiumChart = vxdata.map( (value: any) => {
       return [new Date(value['Trade Date']).getTime(), Number(value.VX30_Premium_zscore_Close)];
-   });
+    });
 
-   const rvol = await SPXRealizedVol();
-   const vrp = await SPXVRP();
-   const vixBasis = await vixbasis();
-   const vx30Roll = await VX30RollData();
+    const vixChart = vxdata.map( (value: any) => {
+      return [
+        new Date(value['Trade Date']).getTime() * 1000, // [0] time
+        Number(value.VIX_Open),
+        Number(value.VIX_High),
+        Number(value.VIX_Low),
+        Number(value.VIX_Close)
+      ];
+    });
 
-   const spxVixData = await getVIXData();
-   const spxIVols = spxVixData.map( (x:any) => {
-    return [ x.symbol, x.price ]
-   });
-   // create a chart that has both VX futures and SPX ivol
-   // need to normalize the dates such that vx looks 30 days into spxIvol
+    const vx30Chart = vxdata.map( (value: any) => {
+      return [
+        new Date(value['Trade Date']).getTime() * 1000, // [0] time
+        Number(value.VX30_Open),
+        Number(value.VX30_High),
+        Number(value.VX30_Low),
+        Number(value.VX30_Close)
+      ];
+    });
+
+    let [vixTsunami, rvol, vrp, vixBasis, vx30Roll, spxVixData] = await Promise.all([VixTsunami(), SPXRealizedVol(), SPXVRP(), vixbasis(),VX30RollData(), getVIXData()]);
+
+    const spxIVols = spxVixData.map( (x:any) => {
+      return [ x.symbol, x.price ]
+    });
+
+
+    const buyVix = vixTsunami.vix_buy.map( value => {
+      return {
+        x: value * 1000,
+        title: 'B',
+        text: 'Long VIX'
+      }
+    });
+
+    const sellVix = vixTsunami.vix_sell.map( value => {
+      return {
+        x: value * 1000,
+        title: 'S',
+        text: 'Sell VIX'
+      }
+    });
+
+    const buyVVix = vixTsunami.vvix_buy.map( value => {
+      return {
+        x: value * 1000,
+        title: 'B',
+        text: 'Long VVIX'
+      }
+    });
+
+    const sellVVix = vixTsunami.vvix_sell.map( value => {
+      return {
+        x: value * 1000,
+        title: 'S',
+        text: 'Sell VVIX'
+      }
+    });
+
+
+
 
 
   let latest: any;
@@ -68,5 +118,5 @@ defaultRoute.get('/', async (req, res) => {
   latest.vx30 = latest.VX30_Close
   latest.premium_zscore = latest.VX30_Premium_zscore_Close
 
-    res.render('index', {data: {vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: data, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata }});
+    res.render('index', {data: {buyVix, sellVix, buyVVix, sellVVix, vixChart, vx30Chart, vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: vx30PremiumChart, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata }});
 });

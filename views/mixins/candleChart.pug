@@ -1,0 +1,59 @@
+mixin candleChart(selector, historical, title, seriesName, buyVix, sellVix)
+    script.
+        Highcharts.stockChart(document.querySelector('#{selector}'), {
+            plotOptions: {
+                candlestick: {
+                    color: 'pink',
+                    lineColor: 'red',
+                    upColor: 'lightgreen',
+                    upLineColor: 'green'
+                }
+            },
+
+            rangeSelector: {
+                selected: 1
+            },
+
+            title: {
+                text: '#{title}'
+            },
+
+            series: [
+            {
+                name: '#{seriesName}',
+                type: 'candlestick',
+                id: 'dataseries',
+                data: #{historical},
+                tooltip: {
+                    valueDecimals: 2
+                }
+            },
+            {
+                type: 'flags',
+                accessibility: {
+                    exposeAsGroupOnly: true,
+                    description: 'Flagged events.'
+                },
+                data: #{buyVix},
+                onSeries: 'dataseries',
+                shape: 'circlepin',
+                width: 16
+            },
+                        {
+                type: 'flags',
+                accessibility: {
+                    exposeAsGroupOnly: true,
+                    description: 'Flagged events.'
+                },
+                color: '#5F86B3',
+                fillColor: '#5F86B3',
+                style: { // text style
+                    color: 'white'
+                },
+                data: #{sellVix},
+                onSeries: 'dataseries',
+                shape: 'squarepin',
+                width: 16
+            },
+            ]
+        });

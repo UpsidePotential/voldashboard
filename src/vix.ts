@@ -409,39 +409,15 @@ export const vixbasis = async (): Promise<any> => {
 }
 
 interface VixTsunamiSignals {
-  SellSignal: string;
-  LongSignal: string;
-  VvixSignal: string;
+  vix_buy: number[];
+  vix_sell: number[];
+  vvix_buy: number[];
+  vvix_sell: number[];
 }
 
 export const VixTsunami = async(): Promise<VixTsunamiSignals> => {
   const data = await got(`${process.env.DASHBOARD_URL}/vixtsunami`);
-  const vixtsunamidata = JSON.parse(data.body).data;
-
-  let SellSignal = null;
-  let LongSignal = null;
-  let VvixSignal = null;
-
-  for (let i = vixtsunamidata.length - 1; i >= 0; i--) {
-      if (!SellSignal && vixtsunamidata[i].sell_signal === 1) {
-           const date = new Date(vixtsunamidata[i].index);
-           SellSignal = date.toISOString().split('T')[0];
-      }
-      if (!LongSignal && vixtsunamidata[i].long_signal === 1) {
-          const date = new Date(vixtsunamidata[i].index);
-          LongSignal = date.toISOString().split('T')[0];
-      }
-      if (!VvixSignal && vixtsunamidata[i].signal_vvix === 1) {
-          const date = new Date(vixtsunamidata[i].index);
-          VvixSignal = date.toISOString().split('T')[0];
-      }
-
-      if(SellSignal && LongSignal && VvixSignal) {
-          break;
-      }
-  }
-
-  return {SellSignal,  LongSignal, VvixSignal}
+  return JSON.parse(data.body);
 }
 
 interface VIXOption {
