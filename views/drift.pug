@@ -9,6 +9,17 @@ block content
         script(src="https://code.highcharts.com/highcharts.js")
         script(src="https://code.highcharts.com/stock/modules/stock.js")
         script(src="https://code.highcharts.com/stock/indicators/indicators.js")
+        div 
+            table
+                tr
+                    th Perp
+                    th APY
+                    th 1 Day Average
+                each n, index in data.fundingHistory
+                    tr
+                        td #{n.perp}
+                        td #{n.history.slice(-1)[0][1].toFixed(4)}
+                        td #{n.average.slice(-1)[0].average.toFixed(4)}
         div
             each val,index in data.fundingHistory
                 div(id=`perp-${index}`)                

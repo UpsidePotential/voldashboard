@@ -65,7 +65,7 @@ async function fetchData(index: number) {
 
 drift.get('/drift', async (req, res) => {
 
-    const fundingHistory = [];
+    let fundingHistory = [];
 
     for(const key in MarketIndex) {
         if(MarketIndex.hasOwnProperty(key)) {
@@ -81,9 +81,9 @@ drift.get('/drift', async (req, res) => {
     }
 
 
-    const averages = fundingHistory.map( value => {
-        return {perp: value.perp, average: calculateRollingAverage(value.history)}
+    fundingHistory = fundingHistory.map( value => {
+        return {perp: value.perp, average: calculateRollingAverage(value.history), history: value.history}
     });
 
-    res.render('drift', {data: {fundingHistory, averages} });
+    res.render('drift', {data: {fundingHistory} });
 })
