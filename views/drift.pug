@@ -1,0 +1,18 @@
+extends layout
+include mixins/fundingchart
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        script(src="https://code.highcharts.com/highcharts.js")
+        script(src="https://code.highcharts.com/stock/modules/stock.js")
+        script(src="https://code.highcharts.com/stock/indicators/indicators.js")
+        div
+            each val,index in data.fundingHistory
+                div(id=`perp-${index}`)                
+                +fundingchart(`#perp-${index}`, `data.fundingHistory[${index}].perp`, `data.fundingHistory[${index}].history`)
+
+        
+

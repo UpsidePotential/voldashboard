@@ -9,6 +9,7 @@ import { vxCalendar } from './vxcalendar'
 import { vixmega } from './vixmega'
 import { tvauth } from './tvauth';
 import { spxOptions } from './spxoptions';
+import {drift} from './driftperps';
 
 export const routes = express.Router();
 
@@ -22,3 +23,4 @@ routes.use(vxCalendar);
 routes.use(vixmega);
 routes.use(tvauth);
 routes.use(spxOptions);
+routes.use(drift)

@@ -1,0 +1,40 @@
+mixin fundingchart(selector, title, data)
+    script.
+        Highcharts.stockChart(document.querySelector('#{selector}'), {
+            title: {
+                text: #{title}
+            },
+            navigator : {
+                enabled : false
+            },
+            srcollbar: {
+                enabled: false
+            },
+            rangeSelector:{
+                enabled:false
+            },
+            xAxis: {
+                type: 'datetime',
+                labels: {
+                    format: '{value:%Y-%b-%e}'
+                }
+            },
+            legend:{ enabled:false },
+            series: [
+            {
+                data: #{data},
+                id: 'aapl',
+                step: 'right',
+                name: 'Right',
+                type: 'line'
+            }, 
+            {
+                type: 'sma',
+                linkedTo: 'aapl',
+                params: {
+                    period: 24
+                }
+            }]
+        });
+
+
