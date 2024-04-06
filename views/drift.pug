@@ -71,22 +71,15 @@ block content
             table
                 tr
                     th(onclick="sortTable(0)") Perp
-                    if columnSorted == 0
-                        | &#x25B2; <!-- Up arrow -->
-                        | &#x25BC; <!-- Down arrow -->
                     th(onclick="sortTable(1)") APY
-                    if columnSorted == 1
-                        | &#x25B2; <!-- Up arrow -->
-                        | &#x25BC; <!-- Down arrow -->
                     th(onclick="sortTable(2)") 1 Day Average
-                    if columnSorted == 2
-                        | &#x25B2; <!-- Up arrow -->
-                        | &#x25BC; <!-- Down arrow -->
+                    th(onclick="sortTable(3)") Spot Volume
                 each n, index in data.fundingHistory
                     tr
                         td #{n.perp}
                         td #{n.history.slice(-1)[0][1].toFixed(4)}
                         td #{n.average.slice(-1)[0].average.toFixed(4)}
+                        td #{n.coin ? n.coin.baseVolume : ''}
         div
             each val,index in data.fundingHistory
                 div(id=`perp-${index}`)                

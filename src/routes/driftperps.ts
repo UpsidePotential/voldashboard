@@ -7,19 +7,7 @@ import NodeCache from 'node-cache';
 export const drift = Router();
 
 
-const MarketIndex: { [key: string]: number } = {
-    "SOL-PERP": 0,
-    "BTC-PERP": 1,
-    "ETH-PERP": 2,
-    "JTO-PERP": 20,
-    "RLB-PERP": 17,
-    "BNB-PERP": 8,
-    "XPP-PERP": 13,
-    "DOGE-PERP": 7,
-    "AVAX-PERP": 22,
-
-
-};
+const PERP_SUFFIX = "-PERP";
 
 async function fetchData(index: number) {
     const currentTime = Date.now();
@@ -94,6 +82,17 @@ async function getMarkets() {
     return result;
   }
 
+const perpToSpot = (name: string, markets: any): any => {
+    let coinName = name.slice(0,-PERP_SUFFIX.length);
+    if(name === "BTC-PERP") {
+        coinName = "wBTC";
+    } else if(name === "ETH-PERP") {
+        coinName = "wETH";
+    }
+   
+    return markets.data.find( (value: any) => value.symbol === coinName);
+}
+
 drift.get('/drift', async (req, res) => {
 
     const nodeCache = req.app.locals.nodeCache as NodeCache;
@@ -120,7 +119,9 @@ drift.get('/drift', async (req, res) => {
 
 
         fundingHistory = fundingHistory.map( (value: any) => {
-            return {perp: value.perp, average: calculateRollingAverage(value.history), history: value.history}
+            // find spot coin
+            const coin = perpToSpot(value.perp, markets);
+            return {perp: value.perp, average: calculateRollingAverage(value.history), history: value.history, coin}
         });
         nodeCache.set('futures', fundingHistory, 900);
     }
