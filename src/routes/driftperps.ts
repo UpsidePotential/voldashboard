@@ -34,7 +34,28 @@ async function fetchData(index: number) {
    return data.json();
   }
 
-  
+
+  async function getusdcFunding() {
+
+    const data = await fetch(`https://mainnet-beta.api.drift.trade/rateHistory?marketIndex=0&type=deposit&daysAgo=30`, {
+         "headers": {
+             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
+             "Accept": "*/*",
+             "Accept-Language": "en-US,en;q=0.5",
+             "Accept-Encoding": "gzip, deflate, br",
+             "Origin": "https://app.drift.trade",
+             "Sec-Fetch-Dest": "empty",
+             "Sec-Fetch-Mode": "cors",
+             "Sec-Fetch-Site": "same-site"
+         },
+     });
+ 
+     if(!data.ok) {
+         return {};
+     }
+ 
+    return data.json();
+ }
 
 async function getMarkets() {
 
@@ -116,6 +137,12 @@ drift.get('/drift', async (req, res) => {
                 console.error('drift error: ', ex);
             }
         }
+
+        const usdc = await getusdcFunding() as any;
+        const usdcFunding = usdc.data.map((obj: any) => {
+            return [obj[0]*1000, Number(obj[1])*100]
+        });
+        fundingHistory.unshift({ perp: 'USDC', history: usdcFunding })
 
 
         fundingHistory = fundingHistory.map( (value: any) => {
