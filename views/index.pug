@@ -13,50 +13,44 @@ block content
         var data = !{JSON.stringify(data)};
 
     .container
-        div
-          table 
-            tr Real time data feed:
-            tr true
-        div
-            script(src="https://code.highcharts.com/highcharts.js")
-            script(src="https://code.highcharts.com/stock/modules/stock.js")
-            div#vixCurve
-            +curveChart('#vixCurve', 'data.names', 'data.prices')
-        div
-            +vxcontracts(data.vxFuturesData)
-        div
-            br
-        div
-            +vixtable(data.latest)
-        div
-            br
-        div
-            +vx30roll(data.vx30Roll)
-        div 
-            div#spxivol
-            +spxcurveChart('#spxivol', 'data.spxIVols')
-        div
-            div#premium
-            +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
-        div
-            img(src='https://market-dashboard.waffletrade.lol/vix_next_day')
-        div
-            img(src='https://market-dashboard.waffletrade.lol/vix_carry_histogram')
-        div
-            div#vx30Chart
-            +candleChart('#vx30Chart', 'data.vx30Chart', 'VX30 Price', 'VX30', '[]', '[]')
-        div
-            div#vixChart
-            +candleChart('#vixChart', 'data.vixChart', 'VIX Price', 'VIX', 'data.buyVix', 'data.sellVix')
-        div
-            div#rvol
-            +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30.slice(-300)')
-        div
-            div#vrp
-            +rvolChart('#vrp', '30 Day VRP ZScore', 'data.vrp.d30Zscore.slice(-300)')
-        div
-            div#ivts
-            +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts.slice(-300)')
-        div
-            div#vvol
-            +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol.slice(-300)')
+        div(class="container")
+            div(class="row row-cols-1")
+                div(class="col")
+                    script(src="https://code.highcharts.com/highcharts.js")
+                    script(src="https://code.highcharts.com/stock/modules/stock.js")
+                    div#vixCurve
+                    +curveChart('#vixCurve', 'data.names', 'data.prices')
+                div(class="col")
+                    +vxcontracts(data.vxFuturesData)
+                div(class="col")
+                    +vixtable(data.latest)
+                div(class="col")
+                    +vx30roll(data.vx30Roll)
+                div(class="col") 
+                    div#spxivol
+                    +spxcurveChart('#spxivol', 'data.spxIVols')
+                div(class="col")
+                    div#premium
+                    +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
+                div(class="col")
+                    img(src='https://market-dashboard.waffletrade.lol/vix_next_day')
+                div(class="col")
+                    img(src='https://market-dashboard.waffletrade.lol/vix_carry_histogram')
+                div(class="col")
+                    div#vx30Chart
+                    +candleChart('#vx30Chart', 'data.vx30Chart', 'VX30 Price', 'VX30', '[]', '[]')
+                div(class="col")
+                    div#vixChart
+                    +candleChart('#vixChart', 'data.vixChart', 'VIX Price', 'VIX', 'data.buyVix', 'data.sellVix')
+                div(class="col")
+                    div#rvol
+                    +rvolChart('#rvol', 'Realized SPX Vol', 'data.rvol.d30.slice(-300)')
+                div(class="col")
+                    div#vrp
+                    +rvolChart('#vrp', '30 Day VRP ZScore', 'data.vrp.d30Zscore.slice(-300)')
+                div(class="col")
+                    div#ivts
+                    +rvolChart('#ivts', 'VIX/VIX3M', 'data.vixBasis.ivts.slice(-300)')
+                div(class="col")
+                    div#vvol
+                    +rvolChart('#vvol', 'VVOL 60 Day', 'data.vixBasis.vvol.slice(-300)')

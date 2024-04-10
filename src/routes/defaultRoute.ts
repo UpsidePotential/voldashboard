@@ -104,9 +104,6 @@ defaultRoute.get('/', async (req, res) => {
     });
 
 
-
-
-
   let latest: any;
   latest = vxdata[vxdata.length -1];
   latest.ivts = vixBasis.ivts[vixBasis.ivts.length -1 ][1];
@@ -117,6 +114,8 @@ defaultRoute.get('/', async (req, res) => {
   latest.premium = latest.VX30_Premium_Close
   latest.vx30 = latest.VX30_Close
   latest.premium_zscore = latest.VX30_Premium_zscore_Close
+
+
 
     res.render('index', {data: {buyVix, sellVix, buyVVix, sellVVix, vixChart, vx30Chart, vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: vx30PremiumChart, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata }});
 });
