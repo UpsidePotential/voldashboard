@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import NodeCache from 'node-cache'
 
-import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW, VX30RollData } from "../vix"
+import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW, VX30RollData, VixHistograms } from "../vix"
 
 export const defaultRoute = Router();
 
@@ -64,7 +64,7 @@ defaultRoute.get('/', async (req, res) => {
       ];
     });
 
-    let [vixTsunami, rvol, vrp, vixBasis, vx30Roll, spxVixData] = await Promise.all([VixTsunami(), SPXRealizedVol(), SPXVRP(), vixbasis(),VX30RollData(), getVIXData()]);
+    let [vixTsunami, rvol, vrp, vixBasis, vx30Roll, spxVixData, vixHistograms] = await Promise.all([VixTsunami(), SPXRealizedVol(), SPXVRP(), vixbasis(),VX30RollData(), getVIXData(), VixHistograms()]);
 
     const spxIVols = spxVixData.map( (x:any) => {
       return [ x.symbol, x.price ]
@@ -117,5 +117,5 @@ defaultRoute.get('/', async (req, res) => {
 
 
 
-    res.render('index', {data: {buyVix, sellVix, buyVVix, sellVVix, vixChart, vx30Chart, vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: vx30PremiumChart, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata }});
+    res.render('index', {data: {buyVix, sellVix, buyVVix, sellVVix, vixChart, vx30Chart, vx30Roll, prices: vxPrices, vxFuturesData, latest, historical: vx30PremiumChart, rvol, vrp: vrp, vixBasis, spxIVols, livemarketdata, vixHistograms }});
 });

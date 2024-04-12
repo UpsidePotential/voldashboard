@@ -7,6 +7,9 @@ include mixins/rvolchart
 include mixins/spxcurveChart
 include mixins/vx30roll
 include mixins/premiumChart
+include mixins/decileChart
+include mixins/scatterChart
+include mixins/histogramChart
 
 block content
     script.
@@ -18,6 +21,7 @@ block content
                 div(class="col")
                     script(src="https://code.highcharts.com/highcharts.js")
                     script(src="https://code.highcharts.com/stock/modules/stock.js")
+                    script(src="https://code.highcharts.com/modules/histogram-bellcurve.js")
                     div#vixCurve
                     +curveChart('#vixCurve', 'data.names', 'data.prices')
                 div(class="col")
@@ -33,9 +37,14 @@ block content
                     div#premium
                     +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
                 div(class="col")
-                    img(src='https://market-dashboard.waffletrade.lol/vix_next_day')
+                    div#vixnextday
+                    +decileChart('#vixnextday', 'data.vixHistograms.nextday', 'Next Day ^SHORTVOL Returns By Slope', 'data.vixHistograms.current_nextday')
                 div(class="col")
-                    img(src='https://market-dashboard.waffletrade.lol/vix_carry_histogram')
+                    div#vixcarry
+                    +scatterChart('#vixcarry', 'data.vixHistograms.histogram', "Log(VX30/VIX) for VIX Decile", 'data.vixHistograms.current_histogram')
+                div(class="col")
+                    div#vixcarryhisto
+                    +histogramChart('#vixcarryhisto', 'data.vixHistograms.filtered_vix_hist', 'data.vixHistograms.filtered_vix_bins', "log(VX30/VIX) for Current Vix Level", 'data.vixHistograms.current_slope')
                 div(class="col")
                     div#vx30Chart
                     +candleChart('#vx30Chart', 'data.vx30Chart', 'VX30 Price', 'VX30', '[]', '[]')

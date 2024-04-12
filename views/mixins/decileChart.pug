@@ -1,0 +1,50 @@
+mixin decileChart(selector, values, title, latest)
+    script.
+        Highcharts.chart(document.querySelector('#{selector}'), {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '#{title}'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: [
+                    '0',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                ],
+                plotLines: [{
+                    color: 'red',
+                    width: 1,
+                    value: #{latest},
+                    zIndex: 10
+                }],
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            legend:{ enabled:false },
+            plotOptions: {
+                column: {
+                    pointPadding: 0,
+                    borderWidth: 0,
+                    groupPadding: 0,
+                    shadow: false
+                }
+            },
+            series: [{
+                data: #{values}
+            }]
+        });

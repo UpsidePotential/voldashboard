@@ -420,6 +420,15 @@ export const VixTsunami = async(): Promise<VixTsunamiSignals> => {
   return JSON.parse(data.body);
 }
 
+interface VixHistograms {
+  histogram: number[];
+  nextday: number[];
+}
+export const VixHistograms = async(): Promise<VixHistograms> => {
+  const data = await got(`${process.env.DASHBOARD_URL}/vix_histogram_data`);
+  return JSON.parse(data.body);
+}
+
 interface VIXOption {
   ask: number;
   bid: number;
