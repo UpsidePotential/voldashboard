@@ -33,7 +33,7 @@ const getVixMegaFactors = async (webhook: WebhookClient[]): Promise<void> => {
         { name: 'VVOL Signal', value: `${latest.vvol_strategy}`},
         { name: 'Slope Bin', value: `${latest.slope_decile}`},
         { name: 'VIX Bin', value: `${latest.VIX_decile}`},
-        { name: 'Premium Z-Score', value: `${latest.VX30_Premium_zscore_Close}`},
+        { name: 'Premium Z-Score', value: `${latest.zscore}`},
     ).addFields(
         { name: 'Tsunami Long Vix', value: `${new Date(vixtsunami.vix_buy[vixtsunami.vix_buy.length-1]*1000).toDateString()}` },
         { name: 'Tsunami Sell Vix', value: `${new Date(vixtsunami.vix_sell[vixtsunami.vix_sell.length-1]*1000).toDateString()}` },

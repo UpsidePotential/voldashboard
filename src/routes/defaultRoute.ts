@@ -109,11 +109,8 @@ defaultRoute.get('/', async (req, res) => {
   latest.ivts = vixBasis.ivts[vixBasis.ivts.length -1 ][1];
   latest.vvol = vixBasis.vvol[vixBasis.vvol.length -1 ][1];
 
-  latest.VIX = latest.VIX_Close
-  latest.VIX3M = latest.VIX3M_Close
-  latest.premium = latest.VX30_Premium_Close
-  latest.vx30 = latest.VX30_Close
-  latest.premium_zscore = latest.VX30_Premium_zscore_Close
+  latest.vx30 = latest.vx30_adjusted
+  latest.premium_zscore = latest.zscore
 
 
 
