@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import NodeCache from 'node-cache'
 
-import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW, VX30RollData, VixHistograms } from "../vix"
+import { premiumZscore, getNumberOfDays, SPXRealizedVol, SPXVRP, vixbasis, getVXFuturesData, getVIXData, VixTsunami, VX30MarketData, LiveData, convertContractNameTW, VixHistograms } from "../vix"
 
 export const defaultRoute = Router();
 
@@ -41,30 +41,24 @@ defaultRoute.get('/', async (req, res) => {
     })
 
     const vx30PremiumChart = vxdata.map( (value: any) => {
-      return [new Date(value['Trade Date']).getTime(), Number(value.VX30_Premium_zscore_Close)];
+      return [new Date(value['Trade Date']).getTime(), Number(value.zscore)];
     });
 
     const vixChart = vxdata.map( (value: any) => {
       return [
         new Date(value['Trade Date']).getTime() * 1000, // [0] time
-        Number(value.VIX_Open),
-        Number(value.VIX_High),
-        Number(value.VIX_Low),
-        Number(value.VIX_Close)
+        Number(value.VIX),
       ];
     });
 
     const vx30Chart = vxdata.map( (value: any) => {
       return [
         new Date(value['Trade Date']).getTime() * 1000, // [0] time
-        Number(value.VX30_Open),
-        Number(value.VX30_High),
-        Number(value.VX30_Low),
-        Number(value.VX30_Close)
+        Number(value.vx30_adjusted)
       ];
     });
 
-    let [vixTsunami, rvol, vrp, vixBasis, vx30Roll, spxVixData, vixHistograms] = await Promise.all([VixTsunami(), SPXRealizedVol(), SPXVRP(), vixbasis(),VX30RollData(), getVIXData(), VixHistograms()]);
+    let [vixTsunami, rvol, vrp, vixBasis, spxVixData, vixHistograms] = await Promise.all([VixTsunami(), SPXRealizedVol(), SPXVRP(), vixbasis(), getVIXData(), VixHistograms()]);
 
     const spxIVols = spxVixData.map( (x:any) => {
       return [ x.symbol, x.price ]
@@ -111,6 +105,13 @@ defaultRoute.get('/', async (req, res) => {
 
   latest.vx30 = latest.vx30_adjusted
   latest.premium_zscore = latest.zscore
+
+  const vx30Roll = {
+    vx1Ticker: latest.ticker_vx1,
+    vx2Ticker: latest.ticker_vx2,
+    vx1_weight: latest.constrained_weight_vx1,
+    vx2_weight: latest.constrained_weight_vx2
+  }
 
 
 
