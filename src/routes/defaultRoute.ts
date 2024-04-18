@@ -41,19 +41,19 @@ defaultRoute.get('/', async (req, res) => {
     })
 
     const vx30PremiumChart = vxdata.map( (value: any) => {
-      return [new Date(value['Trade Date']).getTime(), Number(value.zscore)];
+      return [value.date*1000, Number(value.zscore)];
     });
 
     const vixChart = vxdata.map( (value: any) => {
       return [
-        new Date(value['Trade Date']).getTime() * 1000, // [0] time
+        value.date * 1000, // [0] time
         Number(value.VIX),
       ];
     });
 
     const vx30Chart = vxdata.map( (value: any) => {
       return [
-        new Date(value['Trade Date']).getTime() * 1000, // [0] time
+        value.date * 1000, // [0] time
         Number(value.vx30_adjusted)
       ];
     });

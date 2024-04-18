@@ -1,15 +1,6 @@
 mixin candleChart(selector, historical, title, seriesName, buyVix, sellVix)
     script.
         Highcharts.stockChart(document.querySelector('#{selector}'), {
-            plotOptions: {
-                candlestick: {
-                    color: 'pink',
-                    lineColor: 'red',
-                    upColor: 'lightgreen',
-                    upLineColor: 'green'
-                }
-            },
-
             rangeSelector: {
                 selected: 1
             },
@@ -17,11 +8,12 @@ mixin candleChart(selector, historical, title, seriesName, buyVix, sellVix)
             title: {
                 text: '#{title}'
             },
-
+            navigator : {
+                enabled : false
+            },
             series: [
             {
                 name: '#{seriesName}',
-                type: 'candlestick',
                 id: 'dataseries',
                 data: #{historical},
                 tooltip: {
