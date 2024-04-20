@@ -60,6 +60,23 @@ block content
                     }
                 )
             });
-        div 
+        div(class="row row-cols-1")
+            div(class="col")
+                table(class="table table-striped")
+                    tr
+                        th Symbol
+                        th Value
+                        th Last Update
+                        each n, index in data.livedata
+                            tr
+                                td
+                                    .vxtd= n.symbol
+                                td 
+                                    .vxtd= n.close
+                                td
+                                    .vxtd= n.time
+
+
+        div
             table(id="myTable" class="table table-striped")
 
