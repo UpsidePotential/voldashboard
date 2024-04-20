@@ -1,17 +1,65 @@
 extends layout
-include mixins/premiumChart
-include mixins/vixtable
+include mixins/fundingchart
 
 block content
     script.
         var data = !{JSON.stringify(data)};
 
     .container
-        div#premium
-            +premiumChart('#premium', 'data.historical', 'data.latest.premium_zscore')
-        div
-            +vixtable(data.latest)
-        div
-            p backtest results
-        div
-            p historical positions 
+        script(src="https://code.highcharts.com/highcharts.js")
+        script(src="https://code.highcharts.com/stock/modules/stock.js")
+        script(src="https://code.highcharts.com/stock/indicators/indicators.js")
+        script(src="https://cdn.datatables.net/2.0.3/js/dataTables.js", crossorigin='anonymous')
+        script.
+            $(document).ready( function () {
+                let table = data.vx30
+
+                $('#myTable').DataTable( 
+                    {
+                        data: table,
+                        paging: false,
+                        columns: [
+                            { data: "date", title: 'Date',    
+                                render: function ( data, type, row ) {
+                                    const date = new Date(data * 1000)
+                                    return type === "display" || type === "filter" ?
+                                        date.toDateString() :
+                                        data;
+                                }
+                            },
+                            { data: "ticker_vx1", title: 'VX1'},
+                            { data: "expiry_vx1", title: 'VX1 Expiration'},
+                            { data: "weight_vx1", title: 'VX1 Weight'},
+                            { data: "constrained_weight_vx1", title: 'VX1 Constrained Weight'},
+                            { data: "price_vx1", title: 'VX1 Price'},
+                            { data: "calendaradj_vx1", title: 'VX1 Calendar Adj'},
+                            { data: "adjprice_vx1", title: 'VX1 Adj Price'},
+                            { data: "ticker_vx2", title: 'VX2'},
+                            { data: "expiry_vx2", title: 'VX2 Expiration'},
+                            { data: "weight_vx2", title: 'VX2 Weight'},
+                            { data: "constrained_weight_vx2", title: 'VX2 Constrained Weight'},
+                            { data: "price_vx2", title: 'VX2 Price'},
+                            { data: "calendaradj_vx2", title: 'VX2 Calendar Adj'},
+                            { data: "adjprice_vx2", title: 'VX2 Adj Price'},
+                            { data: "vx30_effective_maturity", title: 'VX30 Eff Maturity'},
+                            { data: "vx30_constrained_effective_maturity", title: 'VX30 Eff Maturity'},
+                            { data: "vx30_raw", title: 'VX30 Raw'},
+                            { data: "vx30_adjusted", title: 'VX30 Adjusted'},
+                            { data: "vix3m_raw", title: 'VIX3M Raw'},
+                            { data: "calendaradj_vix3m", title: 'VIX3M Calendar Adjusted'},
+                            { data: "vix3m_adjusted", title: 'VIX3M Adjusted'},
+                            { data: "premium_raw", title: 'Premium Raw'},
+                            { data: "premium", title: 'Premium'},
+                            { data: "premium_mean", title: 'Premium Mean'},
+                            { data: "premium_sd", title: 'Premium SD'},
+                            { data: "zscore", title: 'zscore'},
+                            { data: "VIX", title: 'VIX'},
+                            { data: "VIX3M", title: 'VIX3M'},
+                            { data: "VVIX", title: 'VVIX'},
+                        ]
+                    }
+                )
+            });
+        div 
+            table(id="myTable" class="table table-striped")
+
