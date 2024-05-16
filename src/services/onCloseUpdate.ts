@@ -5,6 +5,8 @@ import { VXSpreadEntryModel } from "../vxSpread";
 import { MarketData } from "./marketData";
 import { VIXOptionChainEntryModel, VIXOptionEntry } from "../vixoptionsModel";
 import { SPXOptionChainEntryModel, SPXOptionEntry } from "../spxoptionsModel";
+import { HullEntry, HullEntryModel } from "../hullModel";
+import { sentimentMeter, marketPositioning } from "../hulltactical";
 
 export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => {
     const vx_sum = await VXEntryModel.find().exec()
@@ -35,6 +37,29 @@ export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => 
     }
 
     return newData;
+}
+
+export const updateHullData = async (): Promise<HullEntry> => {
+    const sentiment = await sentimentMeter();
+    const positioning = await marketPositioning(); 
+
+    const doc = new HullEntryModel({
+        date: new Date(positioning.X),
+        meter: sentiment,
+        cash: Number(positioning.Cash),
+        sp500: Number(positioning.SP500),
+        uvxy: Number(positioning.UVXY),
+        erp_6m: Number(positioning.ERP_6M),
+        nav: Number(positioning.NAV)
+    });
+
+    try {
+        await doc.save();
+    } catch(e) {
+        console.error(`failed to update vx data: ${e}`)
+    }
+
+    return doc;
 }
 
 export const updateVIXOptionsData = async (): Promise<void> => {

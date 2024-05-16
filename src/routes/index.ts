@@ -10,6 +10,7 @@ import { vixmega } from './vixmega'
 import { tvauth } from './tvauth';
 import { spxOptions } from './spxoptions';
 import {drift} from './driftperps';
+import { hull } from './hull';
 
 export const routes = express.Router();
 
@@ -24,3 +25,4 @@ routes.use(vixmega);
 routes.use(tvauth);
 routes.use(spxOptions);
 routes.use(drift)
+routes.use(hull)

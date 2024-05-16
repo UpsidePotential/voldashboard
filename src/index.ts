@@ -5,7 +5,7 @@ import { routes } from './routes';
 import { connect } from 'mongoose';
 import { WebhookClient } from 'discord.js';
 import { scheduleJob } from 'node-schedule';
-import { updateSPXOptionsData, updateVIXOptionsData, updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
+import { updateHullData, updateSPXOptionsData, updateVIXOptionsData, updateVXCalenderData, updateVXData } from './services/onCloseUpdate';
 import { updateHoldings } from './services/updateHoldings';
 import { MarketData } from './services/marketData';
 import NodeCache from 'node-cache';
@@ -43,6 +43,8 @@ const databaseAcess = `mongodb+srv://${process.env.DB_USER
 
 connect(databaseAcess, {}).then( value => {
     console.log('connected to mongo');
+
+    updateHoldings(webhookClient);
 });
 
 
@@ -53,6 +55,7 @@ connect(databaseAcess, {}).then( value => {
   const server = app.listen(PORT, () => {
       const address = server.address();
       console.log("server is listening at", address);
+      updateHullData();
   });
 
 
@@ -77,6 +80,7 @@ scheduleJob({ rule: '55 14 * * 1-5', tz: 'America/Chicago' }, async () => {
     await updateVXCalenderData();
     await updateVIXOptionsData();
     await updateSPXOptionsData();
+    await updateHullData();
 
   });
 
