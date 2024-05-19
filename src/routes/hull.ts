@@ -1,13 +1,12 @@
 import { Router } from 'express';
-import { sentimentMeter,marketPositioning } from '../hulltactical';
+import { HullEntryModel } from '../hullModel';
 
 export const hull = Router();
 
 hull.get('/hull', async (req, res) => {
 
-  const sentiment = await sentimentMeter();
-  const positioning = await marketPositioning();
+  const data = await HullEntryModel.find().exec()
 
 
-    res.json({sentiment, positioning})
+  res.render('hull', {data});
 })

@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        div
+            table(class="table table-striped")
+                tr
+                    th Date
+                    th Meter
+                    th Cash 
+                    th SP500
+                    th UVXY
+                    th NAV
+                    th erp6m
+                    
+
+                each val in data 
+                    tr
+                        td #{new Date(val.date).toLocaleDateString()}
+                        td #{val.meter}
+                        td #{val.sp500}
+                        td #{val.uvxy}
+                        td #{val.cash}
+                        td #{val.erp_6m}
+                        td #{val.nav}
