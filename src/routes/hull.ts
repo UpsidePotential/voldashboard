@@ -5,7 +5,7 @@ export const hull = Router();
 
 hull.get('/hull', async (req, res) => {
 
-  const data = await HullEntryModel.find().exec()
+  const data = await HullEntryModel.find().sort({ date: -1 }).exec();
 
 
   res.render('hull', {data});
