@@ -43,8 +43,6 @@ const databaseAcess = `mongodb+srv://${process.env.DB_USER
 
 connect(databaseAcess, {}).then( value => {
     console.log('connected to mongo');
-
-    updateHoldings(webhookClient);
 });
 
 
@@ -55,7 +53,6 @@ connect(databaseAcess, {}).then( value => {
   const server = app.listen(PORT, () => {
       const address = server.address();
       console.log("server is listening at", address);
-      updateHullData();
   });
 
 
