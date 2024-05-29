@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import got from 'got'
-import cheerio from 'cheerio';
 import { parseString  } from '@fast-csv/parse'
 
 
@@ -16,16 +15,6 @@ function parseCSV(data: string): Promise<any[]> {
       .on('end', () => resolve(results));
   });
 }
-
-export const sentimentMeter = async(): Promise<number> => {
-    const data = await got('https://www.hulltacticalfunds.com/market-sentiment-meter');
-
-    const $ = cheerio.load(data.body);
-    const spanText  = $('#meter_data').text();
-    const numberMatch = spanText.match(/\d+/);
-    const numberValue = numberMatch ? numberMatch[0] : null;
-    return Number(numberValue);
-};
 
 export const marketPositioning = async(): Promise<any> => {
  const csv = await got('https://www.hulltacticalfunds.com/weights.csv');

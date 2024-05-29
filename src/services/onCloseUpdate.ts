@@ -6,7 +6,7 @@ import { MarketData } from "./marketData";
 import { VIXOptionChainEntryModel, VIXOptionEntry } from "../vixoptionsModel";
 import { SPXOptionChainEntryModel, SPXOptionEntry } from "../spxoptionsModel";
 import { HullEntry, HullEntryModel } from "../hullModel";
-import { sentimentMeter, marketPositioning } from "../hulltactical";
+import { marketPositioning } from "../hulltactical";
 
 export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => {
     const vx_sum = await VXEntryModel.find().exec()
@@ -40,12 +40,11 @@ export const updateVXData = async (marketData: MarketData): Promise<VXEntry> => 
 }
 
 export const updateHullData = async (): Promise<HullEntry> => {
-    const sentiment = await sentimentMeter();
     const positioning = await marketPositioning(); 
 
     const doc = new HullEntryModel({
         date: new Date(positioning.X),
-        meter: sentiment,
+        meter: 0,
         cash: Number(positioning.Cash),
         sp500: Number(positioning.SP500),
         uvxy: Number(positioning.UVXY),
