@@ -69,8 +69,16 @@ export const getVIXData = async () : Promise<any> => {
 }
 
 export const getVXFuturesData = async () : Promise<any[]> => {
-  const vxData = await got('https://www.cboe.com/us/futures/api/get_quotes_combined/?symbol=VX&rootsymbol=null').json() as any;
-  return vxData.data.filter((x: any)=> x.symbol.length == 5)
+  try {
+    const vxData = await got('https://www.cboe.com/us/futures/api/get_quotes_combined/?symbol=VX&rootsymbol=null', {
+    timeout: {
+      request: 1000
+    }}).json() as any;
+    return vxData.data.filter((x: any)=> x.symbol.length == 5)
+  } catch(e) {
+    console.error('failed to get getVXFuturesData: ', e)
+    return []
+  }
 }
 
 export const convertContractName = (name: string): string => {
