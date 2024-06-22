@@ -375,23 +375,49 @@ interface RVol {
   d90: any[];
 }
 export const SPXRealizedVol = async (): Promise<RVol> => {
-  const rvolData = await got(`${process.env.DASHBOARD_URL}/realized_vol_term/json/^spx`);
-  return JSON.parse(rvolData.body);
+  try {
+    const rvolData = await got(`${process.env.DASHBOARD_URL}/realized_vol_term/json/^spx`);
+    return JSON.parse(rvolData.body);
+  }
+  catch(e) {
+    console.error('failed SPXRealizedVol', e);
+    return {d9: [], d30: [], d90: []}
+  }
+
 }
 
 export const VX30MarketData = async (): Promise<any> => {
-  const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30data`);
-  return JSON.parse(rvolData.body);
+  try {
+    const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30data`);
+    return JSON.parse(rvolData.body);
+  } catch(e) {
+    console.error('failed VX30MarketData', e);
+    return {}
+  }
+
 }
 
 export const VX30RollData = async (): Promise<any> => {
-  const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30_roll`);
-  return JSON.parse(rvolData.body);
+  try
+  {
+    const rvolData = await got(`${process.env.DASHBOARD_URL}/vx30_roll`);
+    return JSON.parse(rvolData.body);
+  } catch(e) {
+    console.error('failed VX30RollData', e);
+    return {}
+  }
+
 }
 
 export const LiveData = async (): Promise<any> => {
-  const rvolData = await got(`${process.env.BROKER_URL}/marketdata`);
-  return JSON.parse(rvolData.body);
+  try {
+    const rvolData = await got(`${process.env.BROKER_URL}/marketdata`);
+    return JSON.parse(rvolData.body);
+  } catch(e) {
+    console.error('failed LiveData', e);
+    return {}
+  }
+
 }
 
 interface VRP {
@@ -399,13 +425,25 @@ interface VRP {
   d30Zscore: any[]
 }
 export const SPXVRP = async (): Promise<VRP> => {
-  const rvolData = await got(`${process.env.DASHBOARD_URL}/vrp/json`);
-  return JSON.parse(rvolData.body);
+  try {
+    const rvolData = await got(`${process.env.DASHBOARD_URL}/vrp/json`);
+    return JSON.parse(rvolData.body);
+  } catch(e) {
+    console.error('failed SPXVRP', e);
+    return {d30: [], d30Zscore: []}
+  }
+
 }
 
 export const vixbasis = async (): Promise<any> => {
-  const rvolData = await got(`${process.env.DASHBOARD_URL}/vixBasis`);
-  return JSON.parse(rvolData.body);
+  try {
+    const rvolData = await got(`${process.env.DASHBOARD_URL}/vixBasis`);
+    return JSON.parse(rvolData.body);
+  } catch(e) {
+    console.error('failed vixbasis', e);
+    return {}
+  }
+
 }
 
 interface VixTsunamiSignals {
@@ -416,8 +454,14 @@ interface VixTsunamiSignals {
 }
 
 export const VixTsunami = async(): Promise<VixTsunamiSignals> => {
-  const data = await got(`${process.env.DASHBOARD_URL}/vixtsunami`);
-  return JSON.parse(data.body);
+  try {
+    const data = await got(`${process.env.DASHBOARD_URL}/vixtsunami`);
+    return JSON.parse(data.body);
+  }
+  catch(e) {
+    console.error('failed VixTsunami: ', e);
+    return {vix_buy: [], vix_sell: [], vvix_sell: [], vvix_buy: []}
+  }
 }
 
 interface VixHistograms {
@@ -425,8 +469,15 @@ interface VixHistograms {
   nextday: number[];
 }
 export const VixHistograms = async(): Promise<VixHistograms> => {
-  const data = await got(`${process.env.DASHBOARD_URL}/vix_histogram_data`);
-  return JSON.parse(data.body);
+  try {
+    const data = await got(`${process.env.DASHBOARD_URL}/vix_histogram_data`);
+    return JSON.parse(data.body);
+  }
+  catch(e) {
+    console.error('failed VixHistograms: ', e);
+    return {histogram: [], nextday: []}
+  }
+
 }
 
 interface VIXOption {
