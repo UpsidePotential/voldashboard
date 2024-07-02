@@ -1,0 +1,23 @@
+extends layout
+include mixins/strategyCard
+
+block content
+    script.
+        var data = !{JSON.stringify(data)};
+
+    .container
+        .row 
+            .col-md-4
+                +strategyCard("10y Rate of Change", data.flowstrats.tystrat)
+            .col-md-4
+                +strategyCard("30Y Breakeven", data.flowstrats.be30y) 
+            .col-md-4
+                +strategyCard("Real Yields", data.flowstrats.realyields) 
+            .col-md-4
+                +strategyCard("Window Dressing", data.flowstrats.windowDressing) 
+            .col-md-4
+                +strategyCard("Rebalance", data.flowstrats.rebal) 
+        br
+        div(class="row row-cols-1")
+            div(class="col")
+                img(src="https://market-dashboard.waffletrade.lol/10ychange")

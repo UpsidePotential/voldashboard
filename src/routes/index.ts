@@ -11,6 +11,7 @@ import { tvauth } from './tvauth';
 import { spxOptions } from './spxoptions';
 import {drift} from './driftperps';
 import { hull } from './hull';
+import { bonds } from './bonds';
 
 export const routes = express.Router();
 
@@ -26,3 +27,4 @@ routes.use(tvauth);
 routes.use(spxOptions);
 routes.use(drift)
 routes.use(hull)
+routes.use(bonds)

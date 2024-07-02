@@ -1,0 +1,19 @@
+mixin strategyCard(title, data)
+    .card(style="width: 18rem; margin: 10px;")
+        .card-body
+            h5.card-title #{title}
+            if data.Description
+                p.card-text.mb-2.text-muted #{data.Description}
+            ul.list-group.list-group-flush
+                each value, key in data
+                    if key !== 'Description'
+                        li.list-group-item.d-flex.justify-content-between.align-items-center
+                            strong #{key}
+                            if typeof value === 'object' && value !== null
+                                ul
+                                    each subValue, subKey in value
+                                        li #{subKey}: #{subValue}
+                            else if typeof value === 'number' && value % 1 !== 0
+                                | #{value.toFixed(2)}
+                            else
+                                | #{value}
