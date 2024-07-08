@@ -112,13 +112,9 @@ export const updateSPXOptionsData = async (): Promise<void> => {
         return { date, iv: option.iv, strike: code.strike + code.type, expiration: code.exp, oi: option.open_interest, delta: option.delta, ask: option.ask, bid: option.bid}
     });
 
-    const filteredExpirations = spxoptionschain.filter(value => {
-        const strikePrice = parseInt(value.strike.slice(0, -1)); // Removing the 'p' and converting to integer
-        return strikePrice % 100 === 0;
-    });
 
     // need to remap the data to recreate the chain.  need to group by expiration
-    const groupedData = filteredExpirations.reduce((result: any, currentItem) => {
+    const groupedData = spxoptionschain.reduce((result: any, currentItem) => {
         const date = currentItem.expiration;
       
         // Check if the date group already exists, create it if not
